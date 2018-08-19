@@ -33,7 +33,7 @@
     "scripts": {
         "test": [
             "phpunit",
-            "phpcs -p",
+            "phpcs -p src",
             "phpstan analyse"
         ],
         "post-create-project-cmd": [
@@ -48,3 +48,4 @@
     "minimum-stability": "dev",
     "prefer-stable": true
 }
+
