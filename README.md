@@ -8,7 +8,13 @@ Jasny Annotations
 [![Packagist Stable Version](https://img.shields.io/packagist/v/jasny/annotations.svg)](https://packagist.org/packages/jasny/annotations)
 [![Packagist License](https://img.shields.io/packagist/l/jasny/annotations.svg)](https://packagist.org/packages/jasny/annotations)
 
-Parse annotations from PHP DocBlock.
+Configurable annotation parser from PHP.
+
+Annotations aren't implemented in PHP itself which is why this component offers a way to use the PHP doc-blocks as a
+place for the well known annotation syntax using the `@` char.
+
+The Jasny Annotation parser allows you to configure tags including the method how to parse and extract information. This
+is inline with phpDocumentor style annotations and differs from for instance Doctrine type annotations.
 
 Installation
 ---

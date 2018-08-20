@@ -12,11 +12,14 @@ class DescriptionTag extends AbstractTag
     /**
      * Process an annotation
      *
-     * @param array $annotations
+     * @param array  $annotations
      * @param string $value
+     * @return array
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
-        $annotations[$this->getName()] = $value;
+        $annotations[$this->name] = $value;
+
+        return $annotations;
     }
 }

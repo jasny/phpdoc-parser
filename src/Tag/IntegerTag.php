@@ -19,9 +19,9 @@ class IntegerTag extends AbstractTag
      *
      * @param array  $annotations
      * @param string $value
-     * @return void
+     * @return array
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
         [$word] = explode(' ', $value, 2);
 
@@ -30,5 +30,7 @@ class IntegerTag extends AbstractTag
         }
 
         $annotations[$this->name] = (int)$word;
+
+        return $annotations;
     }
 }

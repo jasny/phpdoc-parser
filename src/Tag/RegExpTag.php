@@ -46,14 +46,16 @@ class RegExpTag extends AbstractTag
      *
      * @param array  $annotations
      * @param string $value
-     * @return void
+     * @return array
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
         if (!preg_match($this->regexp, $value, $matches)) {
             throw new AnnotationException("Failed to parse '@{$this->name} $value': invalid syntax");
         }
 
         $annotations[$this->name] = $matches;
+
+        return $annotations;
     }
 }

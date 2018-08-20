@@ -43,7 +43,7 @@ class AnnotationParser
                 continue;
             }
 
-            $this->tags[$item['tag']]->process($annotations, $item['value'] ?? '');
+            $annotations = $this->tags[$item['tag']]->process($annotations, $item['value'] ?? '');
         }
 
         return $annotations;
@@ -58,7 +58,7 @@ class AnnotationParser
     protected function extractAnnotations(string $doc): array
     {
         $matches = null;
-        $regex = '/^\s*(?:\/\*)?\*\s*@(<tag>\S+)(?:\h+(<value>\S.*?)|\h*)(?:\*\*\/)?\r?$/m';
+        $regex = '/^\s*(?:(?:\/\*)?\*\s*)?@(?<tag>\S+)(?:\h+(?<value>\S.*?)|\h*)(?:\*\*\/)?\r?$/m';
 
         return preg_match_all($regex, $doc, $matches, PREG_SET_ORDER) ? $matches : [];
     }

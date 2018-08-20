@@ -79,10 +79,10 @@ class MultiTag implements TagInterface
      *
      * @param array  $annotations
      * @param string $value
-     * @return void
+     * @return array
      * @throws AnnotationException
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
         $tagName = $this->tag->getName();
 
@@ -95,6 +95,8 @@ class MultiTag implements TagInterface
         }
 
         $this->addAnnotation($annotations, $value, reset($tagAnnotations));
+
+        return $annotations;
     }
 
     /**
@@ -106,7 +108,7 @@ class MultiTag implements TagInterface
      * @return void
      * @throws AnnotationException
      */
-    protected function addAnnotation(array &$annotations, string $value, $item)
+    protected function addAnnotation(array &$annotations, string $value, $item): void
     {
         if (!isset($this->index)) {
             $annotations[$this->key][] = $item;

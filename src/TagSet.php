@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jasny\Annotations;
 
 use function Jasny\expect_type;
+use function Jasny\array_without;
 
 /**
  * A set of tags.
@@ -50,11 +51,23 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
     public function add(iterable $tags): self
     {
         if ($tags instanceof \Traversable) {
-            $tags = iterator_to_array($tags);
+            $tags = iterator_to_array($tags, false);
         }
 
         return new static(array_combine(array_values($this->tags), $tags));
     }
+
+    /**
+     * Get set without specified tag(s)
+     *
+     * @param string[] $keys
+     * @return static
+     */
+    public function without(string ...$keys): self
+    {
+        return new static(array_without($this->tags, $keys));
+    }
+
 
     /**
      * Whether a offset exists.
@@ -104,6 +117,6 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      */
     public function offsetUnset($key): void
     {
-        unset($this->tags[$key]);
+        throw new \BadMethodCallException("A tagset is immutable");
     }
 }

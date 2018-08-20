@@ -57,13 +57,13 @@ class ModifyTag implements TagInterface
      *
      * @param array  $annotations
      * @param string $value
+     * @return array
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
-        $tagAnnotation = [];
-        $this->tag->process($tagAnnotations, $value);
+        $tagAnnotations = $this->tag->process([], $value);
+        $annotations = call_user_func($this->logic, $annotations, $tagAnnotations, $value);
 
-        $fn = $this->logic;
-        $fn($annotations, $tagAnnotations, $value);
+        return $annotations;
     }
 }

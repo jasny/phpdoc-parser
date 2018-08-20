@@ -18,7 +18,7 @@ interface TagInterface
      *
      * @param array  $annotations
      * @param string $value
-     * @return void
+     * @return array
      */
-    public function process(array &$annotations, string $value): void;
+    public function process(array $annotations, string $value): array;
 }
