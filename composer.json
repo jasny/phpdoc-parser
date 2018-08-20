@@ -15,9 +15,11 @@
         "source": "https://github.com/jasny/annotations"
     },
     "require": {
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "jasny/php-functions": "^3.3"
     },
     "require-dev": {
+        "appzcoder/phpcloc": "^0.0.2",
         "jasny/php-code-quality": "^2.3"
     },
     "autoload": {
@@ -32,6 +34,7 @@
     },
     "scripts": {
         "test": [
+            "phpcloc cloc src",
             "phpunit",
             "phpcs -p src",
             "phpstan analyse"
@@ -48,4 +51,3 @@
     "minimum-stability": "dev",
     "prefer-stable": true
 }
-

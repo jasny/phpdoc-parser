@@ -41,15 +41,13 @@ Parse annotations
 ```php
 use Jasny\Annotations\AnnotationParser;
 use Jasny\Annotations\PhpDocumenter;
-use Jasny\Annotations\Types\BooleanType;
+use Jasny\Annotations\Tag\FlagType;
 
 $doc = (new ReflectionFunction('foo'))->getDocComment();
 
-$customTags = [
-    'important' => new BooleanType()
-];
+$customTags = [new FlagTag('important'), new FlagTag('required')];
+$tags = PhpDocumenter::tags()->add($customTags);
 
-$parser = new AnnotationParser(PhpDocumenter::tags() + $customTags);
+$parser = new AnnotationParser($tags);
 $annotations = $parser->parse($doc);
 ```
-
