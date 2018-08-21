@@ -37,7 +37,7 @@ class MethodTag extends AbstractTag
      * @param string $value
      * @return void
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
         $regexp = '/^(?:(?<return_type>\S+)\s+)?(?<name>\w+)\((?<params>[^\)]+)?\)/';
 
@@ -52,6 +52,8 @@ class MethodTag extends AbstractTag
         $method['params'] = isset($method['params']) ? $this->processParams($value, $method['params']) : [];
 
         $annotations[$this->name] = $method;
+
+        return $annotations;
     }
 
     /**

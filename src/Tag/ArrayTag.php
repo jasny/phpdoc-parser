@@ -45,11 +45,11 @@ class ArrayTag extends AbstractTag
     /**
      * Process the annotation
      *
-     * @param array $annotations
+     * @param array  $annotations
      * @param string $value
-     * @return void
+     * @return array
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
         // Strip parentheses
         $raw = preg_replace('/^s*\((.*)\)\s*$/', '$1', $value);
@@ -63,6 +63,8 @@ class ArrayTag extends AbstractTag
         $annotations[$this->name] = $this->assoc
             ? $this->toAssoc($matches[0])
             : $this->toArray($matches[0]);
+
+        return $annotations;
     }
 
     /**

@@ -8,10 +8,13 @@ use Jasny\Annotations\TagSet;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Jasny\Annotations\AnnotationParser
+ */
 class AnnotationParserTest extends TestCase
 {
     /**
-     * @var TagSet|TagInterface[]|MockObject[]
+     * @var TagInterface[]|MockObject[]
      */
     protected $tags;
 
@@ -22,49 +25,120 @@ class AnnotationParserTest extends TestCase
 
     public function setUp()
     {
-        $fooTag = $this->createMock(TagInterface::class);
-        $fooTag->method('getName')->willReturn('foo');
+        $tags = [
+            'foo' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']),
+            'bar' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'bar']),
+            'qux' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'qux']),
+        ];
 
-        $barTag = $this->createMock(TagInterface::class);
-        $barTag->method('getName')->willReturn('bar');
+        $tagset = $this->createMock(TagSet::class);
+        $tagset->method('offsetExists')->willReturnCallback(function($key) use ($tags) {
+            return isset($tags[$key]);
+        });
+        $tagset->method('offsetGet')->willReturnCallback(function($key) use ($tags) {
+            if (!isset($tags[$key])) {
+                throw new \OutOfRangeException("Unknown tag '@{$key}'");
+            }
+            return $tags[$key];
+        });
 
-        $quxTag = $this->createMock(TagInterface::class);
-        $quxTag->method('getName')->willReturn('qux');
-
-        $this->tags = new TagSet([$fooTag, $barTag, $quxTag]);
-        $this->parser = new AnnotationParser($this->tags);
+        $this->tags = $tags;
+        $this->parser = new AnnotationParser($tagset);
     }
 
     public function testParseFlag()
     {
         $this->tags['foo']->expects($this->once())->method('process')
-            ->with([], '');
+            ->with([], '')->willReturn(['foo' => true]);
 
         $doc = <<<DOC
 /**
- * @foo
- */
-DOC;
-
-        $this->parser->parse($doc);
-    }
-
-    public function testParseMultiple()
-    {
-        $this->tags['foo']->expects($this->exactly(3))->method('process')
-            ->withConsecutive([[], ''], [['foo' => 1], 'hi'], [['foo' => 2, 'desc' => 'hi'], ''])
-            ->willReturnOnConsecutiveCalls(['foo' => 1], ['foo' => 2, 'desc' => 'hi'], ['foo' => 3, 'desc' => 'hi']);
-
-        $doc = <<<DOC
-/**
- * @foo
- * @foo hi
  * @foo
  */
 DOC;
 
         $result = $this->parser->parse($doc);
 
-        $this->assertSame(['foo' => 3, 'desc' => 'hi'], $result);
+        $this->assertEquals(['foo' => true], $result);
+    }
+
+    public function testParseFlagSeveral()
+    {
+        $this->tags['foo']->expects($this->once())->method('process')
+            ->with([], '')->willReturn(['foo' => true]);
+
+        $this->tags['bar']->expects($this->once())->method('process')
+            ->with(['foo' => true], '')->willReturn(['foo' => true, 'bar' => true]);
+
+        $doc = <<<DOC
+/**
+ * @foo
+ * @bar
+ */
+DOC;
+
+        $result = $this->parser->parse($doc);
+
+        $this->assertEquals(['foo' => true, 'bar' => true], $result);
+    }
+
+    public function testParseValue()
+    {
+        $this->tags['foo']->expects($this->once())->method('process')
+            ->with([], 'hello')->willReturn(['foo' => 'HELLO!']);
+
+        $doc = <<<DOC
+/**
+ * @foo hello
+ */
+DOC;
+
+        $result = $this->parser->parse($doc);
+
+        $this->assertSame(['foo' => 'HELLO!'], $result);
+    }
+
+    public function testParseMultiple()
+    {
+        $this->tags['foo']->expects($this->exactly(3))->method('process')
+            ->withConsecutive([[], ''], [['foo' => 1], ''], [['foo' => 2], ''])
+            ->willReturnOnConsecutiveCalls(['foo' => 1], ['foo' => 2], ['foo' => 3]);
+
+        $doc = <<<DOC
+/**
+ * @foo
+ * @foo
+ * @foo
+ */
+DOC;
+
+        $result = $this->parser->parse($doc);
+
+        $this->assertSame(['foo' => 3], $result);
+    }
+
+    public function testParseFull()
+    {
+        $this->tags['foo']->expects($this->exactly(2))->method('process')
+            ->withConsecutive([[], 'hi'], [['foo' => ['hi'], 'bar' => true], 'bye'])
+            ->willReturnOnConsecutiveCalls(['foo' => ['hi']], ['foo' => ['hi', 'bye'], 'bar' => true]);
+
+        $this->tags['bar']->expects($this->once())->method('process')
+            ->with(['foo' => ['hi']], '')->willReturn(['foo' => ['hi'], 'bar' => true]);
+
+        $doc = <<<DOC
+/**
+ * This should be ignored, so should {@qux this}
+ * 
+ * @foo hi
+ * @bar
+ * @foo bye
+ * @ign
+ */
+DOC;
+
+        $result = $this->parser->parse($doc);
+
+        $this->assertEquals(['foo' => ['hi', 'bye'], 'bar' => true], $result);
     }
 }

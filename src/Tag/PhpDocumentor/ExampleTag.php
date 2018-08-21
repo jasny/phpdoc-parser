@@ -15,11 +15,11 @@ class ExampleTag extends AbstractTag
     /**
      * Process an annotation.
      *
-     * @param array $annotations
+     * @param array  $annotations
      * @param string $value
-     * @return void
+     * @return array
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
         $regexp = '/^(?:(?<location>[^"]\S*)|"(?<location>[^"]+)")'
             . '(?:\s*(?<start_line>\d+)(?:\s*(?<number_of_lines>\d+))?)?/J';
@@ -32,5 +32,7 @@ class ExampleTag extends AbstractTag
         $matches['number_of_lines'] = isset($matches['number_of_lines']) ? (int)$matches['number_of_lines'] : null;
 
         $annotations['example'] = $matches;
+
+        return $annotations;
     }
 }

@@ -54,9 +54,10 @@ class VarTag extends AbstractTag
      *
      * @param array  $annotations
      * @param string $value
-     * @return void
+     * @return array
+     * @throws AnnotationException
      */
-    public function process(array &$annotations, string $value): void
+    public function process(array $annotations, string $value): array
     {
         $regexp = '/^(?:(?<type>[^$\s]+)\s*)?(?:\$(?<name>\w+)\s*)?(?:"(?<id>[^"]+)")?/';
 
@@ -69,5 +70,7 @@ class VarTag extends AbstractTag
         }
 
         $annotations[$this->name] = $props + $this->additional;
+
+        return $annotations;
     }
 }

@@ -51,7 +51,7 @@ class WordTag extends AbstractTag
      * @param string $value
      * @return array
      */
-    public function process(array &$annotations, string $value): array
+    public function process(array $annotations, string $value): array
     {
         [$word] = $value !== '' ? explode(' ', $value, 2) : [$this->default];
         $annotations[$this->name] = $word;
