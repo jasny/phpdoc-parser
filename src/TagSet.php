@@ -21,7 +21,7 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
     /**
      * Claass constructor.
      *
-     * @param iterable $tags
+     * @param iterable|TagInterface[] $tags
      */
     public function __construct(iterable $tags)
     {
@@ -54,7 +54,7 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
             $tags = iterator_to_array($tags, false);
         }
 
-        return new static(array_combine(array_values($this->tags), $tags));
+        return new static(array_merge(array_values($this->tags), $tags));
     }
 
     /**
@@ -85,12 +85,12 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      *
      * @param mixed $key  Tag name
      * @return TagInterface
-     * @throws \OutOfRangeException if tag is unknown.
+     * @throws \OutOfBoundsException if tag is unknown.
      */
     public function offsetGet($key): TagInterface
     {
         if (!isset($this->tags[$key])) {
-            throw new \OutOfRangeException("Unknown tag '@{$key}'; use isset to see if tag is defined.");
+            throw new \OutOfBoundsException("Unknown tag '@{$key}'; Use isset to see if tag is defined.");
         }
 
         return $this->tags[$key];
@@ -106,7 +106,7 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      */
     public function offsetSet($key, $tag): void
     {
-        throw new \BadMethodCallException("A tagset is immutable");
+        throw new \BadMethodCallException("A tagset is immutable; Use `add()` instead.");
     }
 
     /**
@@ -117,6 +117,6 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      */
     public function offsetUnset($key): void
     {
-        throw new \BadMethodCallException("A tagset is immutable");
+        throw new \BadMethodCallException("A tagset is immutable; Use `without()` instead.");
     }
 }
