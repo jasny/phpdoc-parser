@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Jasny\Annotations\Tag;
 
-use Jasny\Annotations\Tag\AbstractTag;
-
 use function Jasny\expect_type;
 
 /**
@@ -29,7 +27,7 @@ class WordTag extends AbstractTag
     {
         parent::__construct($name);
 
-        expect_type($default, 'string|bool');
+        expect_type($default, ['string', 'bool']);
         $this->default = $default;
     }
 
