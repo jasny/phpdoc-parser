@@ -86,12 +86,11 @@ class MultiTag implements TagInterface
     {
         $tagName = $this->tag->getName();
 
-        $tagAnnotations = [];
-        $this->tag->process($tagAnnotations, $value);
+        $tagAnnotations = $this->tag->process([], $value);
 
         if (count($tagAnnotations) !== 1) {
-            throw new AnnotationException("Unable to parse '@$tagName $value' tag: Multi tags must result in exactly "
-                . " one annotations per tag.");
+            throw new AnnotationException("Unable to parse '@{$tagName} $value' tag: Multi tags must result in "
+                . "exactly one annotations per tag.");
         }
 
         $this->addAnnotation($annotations, $value, reset($tagAnnotations));

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Jasny\Annotations\Tag;
 
 use function Jasny\expect_type;
+use function Jasny\str_before;
+use function Jasny\str_starts_with;
 
 /**
  * Only use the first word after the tag, ignoring the rest
@@ -51,7 +53,10 @@ class WordTag extends AbstractTag
      */
     public function process(array $annotations, string $value): array
     {
-        [$word] = $value !== '' ? explode(' ', $value, 2) : [$this->default];
+        $quoted = (str_starts_with($value, '"') || str_starts_with($value, '\'')) &&
+            preg_match('/^(?|"((?:[^"]+|\\\\.)*)"|\'((?:[^\']+|\\\\.)*)\')/', $value, $matches);
+
+        $word = $value !== '' ? ($quoted ? $matches[1] : str_before($value, ' ')) : $this->default;
         $annotations[$this->name] = $word;
 
         return $annotations;

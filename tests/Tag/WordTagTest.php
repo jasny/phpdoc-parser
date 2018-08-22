@@ -1,10 +1,13 @@
 <?php
 
-namespace Jasny\Annotations\Tests;
+namespace Jasny\Annotations\Tests\Tag;
 
 use Jasny\Annotations\Tag\WordTag;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Jasny\Annotations\Tag\WordTag
+ */
 class WordTagTest extends TestCase
 {
     public function testGetDefault()
@@ -43,17 +46,28 @@ class WordTagTest extends TestCase
 
     public function testProcessSentence()
     {
-        $tag = new WordTag('foo', true);
+        $tag = new WordTag('foo');
 
         $result = $tag->process([], 'hello sweet world');
         $this->assertEquals(['foo' => 'hello'], $result);
     }
 
-    public function testProcessReplace()
+    public function quoteProvider()
     {
-        $tag = new WordTag('foo', true);
+        return [
+            ['"hello world" This a sentence.'],
+            ['\'hello world\' This a sentence.']
+        ];
+    }
 
-        $result = $tag->process(['foo' => 'hi'], 'bye');
-        $this->assertEquals(['foo' => 'bye'], $result);
+    /**
+     * @dataProvider quoteProvider
+     */
+    public function testProcessQuote($value)
+    {
+        $tag = new WordTag('foo');
+
+        $result = $tag->process([], $value);
+        $this->assertEquals(['foo' => 'hello world'], $result);
     }
 }

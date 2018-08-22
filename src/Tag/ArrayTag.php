@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Jasny\Annotations\Tag;
 
-use Jasny\Annotations\Tag\AbstractTag;
 use Jasny\Annotations\AnnotationException;
+
+use function Jasny\str_starts_with;
 
 /**
  * Tag value represents an array
@@ -13,9 +14,10 @@ use Jasny\Annotations\AnnotationException;
 class ArrayTag extends AbstractTag
 {
     /**
-     * @var bool
+     * @var string
+     * @enum 'string', 'int', 'float'
      */
-    protected $assoc;
+    protected $type;
 
 
     /**
@@ -23,22 +25,27 @@ class ArrayTag extends AbstractTag
      *
      * @param string $name
      * @param bool   $assoc  Parse associative array syntax
+     * @param string $type   ('string', 'int', 'float')
      */
-    public function __construct(string $name, bool $assoc = false)
+    public function __construct(string $name, string $type = 'string')
     {
+        if (!in_array($type, ['string', 'int', 'float'])) {
+            throw new \InvalidArgumentException("Invalid type '$type'");
+        }
+
         parent::__construct($name);
 
-        $this->assoc = $assoc;
+        $this->type = $type;
     }
 
     /**
-     * Parse associative array syntax
+     * Get the value type
      *
-     * @return bool
+     * @return string  ('string', 'int', 'float')
      */
-    protected function isAssoc(): bool
+    public function getType(): string
     {
-        return $this->assoc;
+        return $this->type;
     }
 
 
@@ -51,55 +58,59 @@ class ArrayTag extends AbstractTag
      */
     public function process(array $annotations, string $value): array
     {
+        if ($value === '') {
+            $annotations[$this->name] = [];
+
+            return $annotations;
+        }
+
         // Strip parentheses
-        $raw = preg_replace('/^s*\((.*)\)\s*$/', '$1', $value);
+        if (str_starts_with($value, '(')) {
+            $value = preg_replace('/^\(((?:"(?:[^"]+|\\\\.)*"|\'(?:[^\']+|\\\\.)*\'|[^\)]+)*)\).*$/', '$1', $value);
+        }
 
-        $regexp = '/(?<=^|,)(?:"(?:[^"]+|\\\\.)*"|\'(?:[^\']+|\\\\.)*\'|[^,\'"]+|[\'"])+/';
+        $regexp = '/(?<=^|,)\s*(?:\'(?:[^\']++|\\\\.)*\'|(?:"(?:[^"]++|\\\\.)*"|[^,\'"]+|[\'"])+)/';
+        preg_match_all($regexp, $value, $matches, PREG_PATTERN_ORDER); // regex can't fail
 
-        if (preg_match_all($regexp, $value, $matches, PREG_PATTERN_ORDER)) {
+        $array = $this->toArray($matches[0]);
+
+        if ($array === false) {
             throw new AnnotationException("Failed to parse '@{$this->name} {$value}': invalid syntax");
         }
 
-        $annotations[$this->name] = $this->assoc
-            ? $this->toAssoc($matches[0])
-            : $this->toArray($matches[0]);
+        $annotations[$this->name] = $array;
 
         return $annotations;
     }
 
     /**
-     * Process matched items
+     * Process matched items.
+     *
+     * Returns `false` on error.
      *
      * @param array $items
-     * @return array
+     * @return array|false
      */
-    public function toArray(array $items): array
-    {
-        foreach ($items as &$item) {
-            $item = preg_replace('/^\s*(["\']?)(.+)\1\s*$/', '$2', $item);
-        }
-
-        return $items;
-    }
-
-    /**
-     * Process matched items as associative array
-     *
-     * @param array $items
-     * @return array
-     */
-    public function toAssoc(array $items): array
+    protected function toArray(array $items)
     {
         $result = [];
 
         foreach ($items as $item) {
-            preg_match('^(?:\s*(["\']?)(?<key>.+?)\1\s*=)?\s*(["\']?)(?<value>.+?)\3\s*$', $item, $matches);
-
-            if (isset($matches['key'])) {
-                $result[$matches['key']] = $matches['value'];
-            } else {
-                $result[] = $matches['value'];
+            switch ($this->type) {
+                case 'string': $regex = '/^\s*(["\']?)(?<value>.*)\1\s*$/'; break;
+                case 'int': $regex = '/^\s*(?<value>[\-+]?\d+)\s*$/'; break;
+                case 'float': $regex = '/^\s*(?<value>[\-+]?\d+(?:\.\d+)?(?:e\d+)?)\s*$/'; break;
+                default: throw new \UnexpectedValueException("Unknown type '$this->type'");
             }
+
+            if (!preg_match($regex, $item, $matches)) {
+                return false; // invalid syntax
+            }
+
+            $value = $matches['value'];
+            settype($value, $this->type);
+
+            $result[] = $value;
         }
 
         return $result;

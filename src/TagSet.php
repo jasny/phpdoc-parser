@@ -60,7 +60,7 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
     /**
      * Get set without specified tag(s)
      *
-     * @param string[] $keys
+     * @param string ...$keys
      * @return static
      */
     public function without(string ...$keys): self
