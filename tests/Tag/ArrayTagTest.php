@@ -50,7 +50,7 @@ class ArrayTagTest extends TestCase
     public function testGetTypeInvalid()
     {
         $tag = new ArrayTag('foo', 'ton');
-        $this->assertEquals('string', $tag->getType());
+        $tag->getType();
     }
 
     public function testProcess()
