@@ -24,7 +24,6 @@ abstract class AbstractArrayTag extends AbstractTag
      * Class constructor.
      *
      * @param string $name
-     * @param bool   $assoc  Parse associative array syntax
      * @param string $type   ('string', 'int', 'float')
      */
     public function __construct(string $name, string $type = 'string')
@@ -67,10 +66,12 @@ abstract class AbstractArrayTag extends AbstractTag
         $itemString = $this->stripParentheses($value);
 
         $items = $this->splitValue($itemString);
-        $array = $this->toArray($items);
 
-        if ($array === false) {
-            throw new AnnotationException("Failed to parse '@{$this->name} {$value}': invalid syntax");
+        try {
+            $array = $this->toArray($items);
+        } catch (AnnotationException $exception) {
+            throw new AnnotationException("Failed to parse '@{$this->name} {$value}': " . $exception->getMessage(),
+                0, $exception);
         }
 
         $annotations[$this->name] = $array;
@@ -87,7 +88,7 @@ abstract class AbstractArrayTag extends AbstractTag
     protected function stripParentheses(string $value)
     {
         return str_starts_with($value, '(')
-            ? preg_replace('/^\(((?:"(?:[^"]+|\\\\.)*"|\'(?:[^\']+|\\\\.)*\'|[^\)]+)*)\).*$/', '$1', $value)
+            ? preg_replace('/^\(((?:"(?:[^"]++|\\\\.)*"|\'(?:[^\']++|\\\\.)*\'|[^\)]++|\))*)\).*$/', '$1', $value)
             : $value;
 
     }
@@ -103,12 +104,10 @@ abstract class AbstractArrayTag extends AbstractTag
     /**
      * Process matched items.
      *
-     * Returns `false` on error.
-     *
      * @param array $items
-     * @return array|false
+     * @return array
      */
-    protected function toArray(array $items)
+    protected function toArray(array $items): array
     {
         $result = [];
 
@@ -121,7 +120,7 @@ abstract class AbstractArrayTag extends AbstractTag
             }
 
             if (!preg_match($regex, $item, $matches)) {
-                return false; // invalid syntax
+                throw new AnnotationException("invalid value '" . addcslashes(trim($item), "'") . "'");
             }
 
             $value = $matches['value'];

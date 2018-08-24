@@ -131,7 +131,7 @@ class ArrayTagTest extends TestCase
 
     /**
      * @expectedException \Jasny\Annotations\AnnotationException
-     * @expectedExceptionMessage Failed to parse '@foo 10, 33.2, 20': invalid syntax
+     * @expectedExceptionMessage Failed to parse '@foo 10, 33.2, 20': invalid value '33.2'
      */
     public function testProcessInvalidInt()
     {
@@ -141,7 +141,7 @@ class ArrayTagTest extends TestCase
 
     /**
      * @expectedException \Jasny\Annotations\AnnotationException
-     * @expectedExceptionMessage Failed to parse '@foo 10, 33.., 20': invalid syntax
+     * @expectedExceptionMessage Failed to parse '@foo 10, 33.., 20': invalid value '33..'
      */
     public function testProcessInvalidFloat()
     {

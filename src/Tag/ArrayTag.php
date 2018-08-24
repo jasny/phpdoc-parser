@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Jasny\Annotations\Tag;
 
-use Jasny\Annotations\AnnotationException;
-
-use function Jasny\str_starts_with;
-
 /**
  * Tag value represents an array
  */
