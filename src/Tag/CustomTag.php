@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Jasny\Annotations\Tag;
 
-use Jasny\Annotations\Tag\AbstractTag;
-
 /**
  * Custom logic for a tag.
  */
 class CustomTag extends AbstractTag
 {
     /**
-     * @var \Closure
+     * @var callable
      */
     protected $process;
 
@@ -26,7 +24,7 @@ class CustomTag extends AbstractTag
     {
         parent::__construct($name);
 
-        $this->process = !$process instanceof \Closure ? \Closure::fromCallable($process) : $process;
+        $this->process = $process;
     }
 
     /**
@@ -38,6 +36,6 @@ class CustomTag extends AbstractTag
      */
     public function process(array $annotations, string $value): array
     {
-        return $this->process->call($this, $annotations, $value);
+        return call_user_func($this->process, $annotations, $value);
     }
 }
