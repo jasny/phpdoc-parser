@@ -5,23 +5,27 @@ namespace Jasny\Annotations\Tests\Tag;
 use Jasny\Annotations\Tag\FlagTag;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Jasny\Annotations\Tag\FlagTag
- */
 class FlagTagTest extends TestCase
 {
-    use \Jasny\TestHelper;
+    public function testGetName()
+    {
+        $tag = new FlagTag('foo');
+        $this->assertEquals('foo', $tag->getName());
+    }
 
-    /**
-     * Test 'process' method
-     */
     public function testProcess()
     {
-        $tag = $this->createPartialMock(FlagTag::class, []);
-        $this->setPrivateProperty($tag, 'name', 'foo');
+        $tag = new FlagTag('foo');
+        $result = $tag->process(['bar' => 42], '');
 
-        $result = $tag->process(['some' => 'value'], 'bar');
+        $this->assertEquals(['bar' => 42, 'foo' => true], $result);
+    }
 
-        $this->assertSame(['some' => 'value', 'foo' => true], $result);
+    public function testProcessDescription()
+    {
+        $tag = new FlagTag('foo');
+        $result = $tag->process([], 'this is ignored');
+
+        $this->assertEquals(['foo' => true], $result);
     }
 }
