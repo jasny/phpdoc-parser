@@ -2,75 +2,54 @@
 
 namespace Jasny\Annotations\Tests\Tag;
 
-use PHPUnit\Framework\TestCase;
 use Jasny\Annotations\Tag\ModifyTag;
 use Jasny\Annotations\TagInterface;
+use Jasny\TestHelper;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @covers \Jasny\Annotations\Tag\ModifyTag
  */
 class ModifyTagTest extends TestCase
 {
-    use \Jasny\TestHelper;
+    use TestHelper;
 
-    /**
-     * Test 'getName' method
-     */
     public function testGetName()
     {
-        $innerTag = $this->createMock(TagInterface::class);
-        $innerTag->expects($this->once())->method('getName')->willReturn('foo');
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']);
 
-        $tag = new ModifyTag($innerTag, function() {});
+        $tag = new ModifyTag($mockTag, function() {});
 
-        $result = $tag->getName();
-
-        $this->assertSame('foo', $result);
+        $this->assertEquals('foo', $tag->getName());
     }
 
-    /**
-     * Test 'geTag' method
-     */
-    public function testGeTag()
+    public function testGetTag()
     {
-        $innerTag = $this->createMock(TagInterface::class);
-        $tag = new ModifyTag($innerTag, function() {});
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createMock(TagInterface::class);
 
-        $result = $tag->getTag();
+        $tag = new ModifyTag($mockTag, function() {});
 
-        $this->assertSame($innerTag, $result);
+        $this->assertSame($mockTag, $tag->getTag());
     }
 
-    /**
-     * Test 'process' method
-     */
     public function testProcess()
     {
-        $value = 'some_value';
-        $annotations = ['bar' => 'bar_value'];
-        $tagAnnotations = ['foo' => 'foo_value'];
-        $expected = ['bar' => 'bar_value', 'foo' => 'foo_value', 'more' => 'added'];
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createMock(TagInterface::class);
+        $mockTag->expects($this->once())->method('process')->with([], 'one two')
+            ->willReturn(['foo' => 42]);
 
-        $innerTag = $this->createMock(TagInterface::class);
-        $innerTag->expects($this->once())->method('process')->with([], $value)->willReturn($tagAnnotations);
+        /** @var MockObject|callable $apply */
+        $args = [['bar' => 1], ['foo' => 42], 'one two'];
+        $apply = $this->createCallbackMock($this->once(), $args, ['bar' => 2, 'foo' => 3]);
 
-        $postProcess = function($annotationsParam, $tagAnnotationsParam, $valueParam) use ($annotations, $tagAnnotations, $value) {
-            $this->assertSame($annotations, $annotationsParam);
-            $this->assertSame($tagAnnotations, $tagAnnotationsParam);
-            $this->assertSame($value, $valueParam);
+        $tag = new ModifyTag($mockTag, $apply);
 
-            return array_merge($annotations, $tagAnnotations, ['more' => 'added']);
+        $result = $tag->process(['bar' => 1], 'one two');
 
-            $annotationsParam['more'] = 'added';
-
-            return $annotationsParam;
-        };
-
-        $postProcess->bindTo($this);
-
-        $tag = new ModifyTag($innerTag, $postProcess);
-        $result = $tag->process($annotations, $value);
-
-        $this->assertSame($expected, $result);
+        $this->assertEquals(['bar' => 2, 'foo' => 3], $result);
     }
 }

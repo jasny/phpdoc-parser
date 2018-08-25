@@ -4,6 +4,8 @@ namespace Jasny\Annotations\Tests\Tag;
 
 use Jasny\Annotations\Tag\MultiTag;
 use Jasny\Annotations\TagInterface;
+use Jasny\TestHelper;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,158 +13,114 @@ use PHPUnit\Framework\TestCase;
  */
 class MultiTagTest extends TestCase
 {
-    /**
-     * Test 'getKey' method
-     */
-    public function testGetKey()
-    {
-        $tags = new MultiTag('foo', $this->createMock(TagInterface::class));
-        $result = $tags->getKey();
+    use TestHelper;
 
-        $this->assertSame('foo', $result);
-    }
-
-    /**
-     * Test 'getName' method
-     */
     public function testGetName()
     {
-        $tag = $this->createMock(TagInterface::class);
-        $tag->expects($this->once())->method('getName')->willReturn('bar');
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']);
 
-        $tags = new MultiTag('foo', $tag);
-        $result = $tags->getName();
+        $tag = new MultiTag('foos', $mockTag);
 
-        $this->assertSame('bar', $result);
+        $this->assertEquals('foo', $tag->getName());
     }
 
-    /**
-     * Test 'getTag' method
-     */
+    public function testGetKey()
+    {
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']);
+
+        $tag = new MultiTag('foos', $mockTag);
+
+        $this->assertEquals('foos', $tag->getKey());
+    }
+
     public function testGetTag()
     {
-        $tag = $this->createMock(TagInterface::class);
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createMock(TagInterface::class);
 
-        $tags = new MultiTag('foo', $tag);
-        $result = $tags->getTag();
+        $tag = new MultiTag('foos', $mockTag);
 
-        $this->assertSame($tag, $result);
+        $this->assertSame($mockTag, $tag->getTag());
     }
 
-    /**
-     * Test 'process' method
-     */
     public function testProcess()
     {
-        $value = 'foo comment to process';
-        $tagAnnotations = ['inner_tag_name' => ['foo' => 'comment', 'to' => 'process']];
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createMock(TagInterface::class);
+        $mockTag->expects($this->once())->method('process')->with([], 'three')
+            ->willReturn(['foo' => '3']);
 
-        $tag = $this->createMock(TagInterface::class);
-        $tag->method('process')->with([], $value)->willReturn($tagAnnotations);
-        $tag->method('getName')->willReturn('inner_tag_name');
+        $tag = new MultiTag('foos', $mockTag);
 
-        $tags = new MultiTag('multi_tag_container', $tag, 'foo');
-        $result = $tags->process([
-            'multi_tag_container' => ['prev_tag' => ['some' => 'value']]
-        ], $value);
+        $result = $tag->process(['foos' => ['one', 'two']], 'three');
 
-        $expected = [
-            'multi_tag_container' => [
-                'prev_tag' => ['some' => 'value'],
-                'comment' => ['foo' => 'comment', 'to' => 'process']
-            ]
-        ];
-
-        $this->assertSame($expected, $result);
+        $this->assertEquals(['foos' => ['one', 'two', '3']], $result);
     }
 
     /**
-     * Test 'process' method, if no index is set
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Unable to parse '@foo' tag: Multi tags must result in exactly one annotation per tag.
      */
-    public function testProcessNoIndex()
+    public function testProcessLogicException()
     {
-        $value = 'foo comment to process';
-        $tagAnnotations = ['inner_tag_name' => ['foo' => 'comment', 'to' => 'process']];
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']);
+        $mockTag->expects($this->once())->method('process')->with([], 'three')
+            ->willReturn(['foo' => '3', 'bar' => '2']);
 
-        $tag = $this->createMock(TagInterface::class);
-        $tag->method('process')->with([], $value)->willReturn($tagAnnotations);
-        $tag->method('getName')->willReturn('inner_tag_name');
+        $tag = new MultiTag('foos', $mockTag);
 
-        $tags = new MultiTag('multi_tag_container', $tag);
-        $result = $tags->process([
-            'multi_tag_container' => [['some' => 'value']]
-        ], $value);
+        $tag->process(['foos' => ['one', 'two']], 'three');
+    }
 
-        $expected = [
-            'multi_tag_container' => [
-                ['some' => 'value'],
-                ['foo' => 'comment', 'to' => 'process']
-            ]
-        ];
+    public function testProcessKey()
+    {
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createMock(TagInterface::class);
+        $mockTag->expects($this->once())->method('process')->with([], 'goodbye')
+            ->willReturn(['foo' => ['name' => 'two', 'desc' => 'bye']]);
 
-        $this->assertSame($expected, $result);
+        $tag = new MultiTag('foos', $mockTag, 'name');
+
+        $result = $tag->process(['foos' => ['one' => ['name' => 'one', 'desc' => 'hi']]], 'goodbye');
+
+        $this->assertEquals(['foos' => [
+            'one' => ['name' => 'one', 'desc' => 'hi'],
+            'two' => ['name' => 'two', 'desc' => 'bye']
+        ]], $result);
     }
 
     /**
-     * Test 'process' method, if processing inner tag returns array with > 1 elements
-     *
-     * @expectedException Jasny\Annotations\AnnotationException
-     * @expectedExceptionMessage Unable to parse '@inner_tag_name foo comment to process' tag: Multi tags must result in exactly one annotations per tag.
+     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedExceptionMessage Unable to add '@foo goodbye' tag: No name
      */
-    public function testProcessTagAnnotationCountException()
+    public function testProcessKeyUnkonwn()
     {
-        $value = 'foo comment to process';
-        $tagAnnotations = ['foo' => 'comment', 'to' => 'process'];
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']);
+        $mockTag->expects($this->once())->method('process')->with([], 'goodbye')
+            ->willReturn(['foo' => ['desc' => 'bye']]);
 
-        $tag = $this->createMock(TagInterface::class);
-        $tag->method('process')->with([], $value)->willReturn($tagAnnotations);
-        $tag->method('getName')->willReturn('inner_tag_name');
+        $tag = new MultiTag('foos', $mockTag, 'name');
 
-        $tags = new MultiTag('multi_tag_container', $tag, 'foo');
-        $result = $tags->process([
-            'multi_tag_container' => ['prev_tag' => ['some' => 'value']]
-        ], $value);
+        $tag->process(['foos' => ['one' => ['name' => 'one', 'desc' => 'hi']]], 'goodbye');
     }
 
     /**
-     * Test 'process' method, in case when processing inner tag returns wrong data
-     *
-     * @expectedException Jasny\Annotations\AnnotationException
-     * @expectedExceptionMessage Unable to add '@inner_tag_name foo comment to process' tag: No non_exist_index
+     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedExceptionMessage Unable to add '@foo goodbye' tag: Duplicate name 'one'
      */
-    public function testProcessWrongTagAnnotations()
+    public function testProcessKeyDuplicate()
     {
-        $value = 'foo comment to process';
-        $tagAnnotations = ['inner_tag_name' => ['another' => 'key']];
+        /** @var MockObject|TagInterface $mockTag */
+        $mockTag = $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']);
+        $mockTag->expects($this->once())->method('process')->with([], 'goodbye')
+            ->willReturn(['foo' => ['name' => 'one', 'desc' => 'bye']]);
 
-        $tag = $this->createMock(TagInterface::class);
-        $tag->method('process')->with([], $value)->willReturn($tagAnnotations);
-        $tag->method('getName')->willReturn('inner_tag_name');
+        $tag = new MultiTag('foos', $mockTag, 'name');
 
-        $tags = new MultiTag('multi_tag_container', $tag, 'non_exist_index');
-        $result = $tags->process([
-            'multi_tag_container' => ['prev_tag' => ['some' => 'value']]
-        ], $value);
-    }
-
-    /**
-     * Test 'process' method, in case when data with given index already exists in annotations
-     *
-     * @expectedException Jasny\Annotations\AnnotationException
-     * @expectedExceptionMessage Unable to add '@inner_tag_name foo comment to process' tag: Duplicate exist_index
-     */
-    public function testProcessDuplicateIndex()
-    {
-        $value = 'foo comment to process';
-        $tagAnnotations = ['inner_tag_name' => ['exist_index' => 'value']];
-
-        $tag = $this->createMock(TagInterface::class);
-        $tag->method('process')->with([], $value)->willReturn($tagAnnotations);
-        $tag->method('getName')->willReturn('inner_tag_name');
-
-        $tags = new MultiTag('multi_tag_container', $tag, 'exist_index');
-        $result = $tags->process([
-            'multi_tag_container' => ['value' => ['some_other' => 'some_value']]
-        ], $value);
+        $tag->process(['foos' => ['one' => ['name' => 'one', 'desc' => 'hi']]], 'goodbye');
     }
 }

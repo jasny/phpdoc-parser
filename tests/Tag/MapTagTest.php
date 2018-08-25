@@ -8,6 +8,7 @@ use Jasny\Annotations\Tag\MapTag;
 
 /**
  * @covers \Jasny\Annotations\Tag\MapTag
+ * @covers \Jasny\Annotations\Tag\AbstractArrayTag
  */
 class MapTagTest extends TestCase
 {

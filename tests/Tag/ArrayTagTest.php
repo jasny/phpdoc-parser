@@ -8,6 +8,7 @@ use Jasny\Annotations\Tag\ArrayTag;
 
 /**
  * @covers \Jasny\Annotations\Tag\ArrayTag
+ * @covers \Jasny\Annotations\Tag\AbstractArrayTag
  */
 class ArrayTagTest extends TestCase
 {

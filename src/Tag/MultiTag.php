@@ -88,8 +88,8 @@ class MultiTag implements TagInterface, ProxyTagInterface
         $tagAnnotations = $this->tag->process([], $value);
 
         if (count($tagAnnotations) !== 1) {
-            throw new AnnotationException("Unable to parse '@{$tagName} $value' tag: Multi tags must result in "
-                . "exactly one annotations per tag.");
+            throw new \LogicException("Unable to parse '@{$tagName}' tag: Multi tags must result in "
+                . "exactly one annotation per tag.");
         }
 
         $this->addAnnotation($annotations, $value, reset($tagAnnotations));
@@ -98,7 +98,7 @@ class MultiTag implements TagInterface, ProxyTagInterface
     }
 
     /**
-     * Add annotation
+     * Add annotation.
      *
      * @param array  $annotations
      * @param string $value
@@ -113,16 +113,16 @@ class MultiTag implements TagInterface, ProxyTagInterface
             return;
         }
 
-        $tagName = $this->tag->getName();
+        $tagName = $this->getName();
 
-        if (!isset($item[$this->index])) {
-            throw new AnnotationException("Unable to add '@$tagName $value' tag: No {$this->index}");
+        if (!is_array($item) || !isset($item[$this->index])) {
+            throw new AnnotationException("Unable to add '@{$tagName} $value' tag: No {$this->index}");
         }
 
         $index = $item[$this->index];
 
         if (isset($annotations[$this->key][$index])) {
-            throw new AnnotationException("Unable to add '@$tagName $value' tag: Duplicate {$this->index} "
+            throw new AnnotationException("Unable to add '@{$tagName} $value' tag: Duplicate {$this->index} "
                 . "'$index'");
         }
 
