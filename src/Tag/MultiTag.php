@@ -10,7 +10,7 @@ use Jasny\Annotations\AnnotationException;
 /**
  * Tag can exist multiple times
  */
-class MultiTag implements TagInterface
+class MultiTag implements TagInterface, ProxyTagInterface
 {
     /**
      * @var string

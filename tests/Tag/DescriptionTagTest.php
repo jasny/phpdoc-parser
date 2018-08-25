@@ -10,18 +10,17 @@ use PHPUnit\Framework\TestCase;
  */
 class DescriptionTagTest extends TestCase
 {
-    use \Jasny\TestHelper;
+    public function testGetName()
+    {
+        $tag = new DescriptionTag('foo');
+        $this->assertEquals('foo', $tag->getName());
+    }
 
-    /**
-     * Test 'process' method
-     */
     public function testProcess()
     {
-        $tag = $this->createPartialMock(DescriptionTag::class, []);
-        $this->setPrivateProperty($tag, 'name', 'foo');
+        $tag = new DescriptionTag('foo');
 
-        $result = $tag->process(['some' => 'value'], 'bar');
-
-        $this->assertSame(['some' => 'value', 'foo' => 'bar'], $result);
+        $result = $tag->process(['bar' => 1], 'Hello this is "the text"');
+        $this->assertEquals(['bar' => 1, 'foo' => 'Hello this is "the text"'], $result);
     }
 }

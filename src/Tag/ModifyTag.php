@@ -7,9 +7,9 @@ namespace Jasny\Annotations\Tag;
 use Jasny\Annotations\TagInterface;
 
 /**
- * Modify the bahaviour of a tag
+ * Modify the behavior of a tag
  */
-class ModifyTag implements TagInterface
+class ModifyTag implements TagInterface, ProxyTagInterface
 {
     /**
      * @var TagInterface
@@ -45,6 +45,8 @@ class ModifyTag implements TagInterface
     }
 
     /**
+     * Get the wrapped tag.
+     *
      * @return TagInterface
      */
     public function getTag(): TagInterface
