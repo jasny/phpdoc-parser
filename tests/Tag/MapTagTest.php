@@ -58,23 +58,23 @@ class MapTagTest extends TestCase
     {
         $tag = new MapTag('foo');
 
-        $result = $tag->process([], 'red=good, green = 229, \'blue\' = "some")');
-        $this->assertEquals(['foo' => ['red' => 'good', 'green' => '299', 'blue' => 'some']], $result);
+        $result = $tag->process([], 'red=good, green = 229, "yellow mark" = 30, \'blue\' = "some"');
+        $this->assertEquals(['foo' => ['red' => 'good', 'green' => '229', 'yellow mark' => '30', 'blue' => 'some']], $result);
     }
 
     public function testProcessAssocInt()
     {
         $tag = new MapTag('foo', 'int');
 
-        $result = $tag->process([], 'red = 66, green = 229, blue = 244)');
-        $this->assertEquals(['foo' => ['red' => 66, 'green' => 299, 'blue' => 244]], $result);
+        $result = $tag->process([], 'red = 66, green = 229, blue = 244');
+        $this->assertEquals(['foo' => ['red' => 66, 'green' => 229, 'blue' => 244]], $result);
     }
 
     public function testProcessAssocFloat()
     {
         $tag = new MapTag('foo', 'float');
 
-        $result = $tag->process([], 'red => 66.4, green => 229.0, blue => 244.482)');
-        $this->assertEquals(['foo' => ['red' => 66.4, 'green' => 299.0, 'blue' => 244.482]], $result);
+        $result = $tag->process([], 'red = 66.4, green = 229.0, blue = 244.482');
+        $this->assertEquals(['foo' => ['red' => 66.4, 'green' => 229.0, 'blue' => 244.482]], $result);
     }
 }
