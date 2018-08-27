@@ -2,7 +2,7 @@
 
 <phpunit
     colors="true"
-    bootstrap="vendor/autoload.php"
+    bootstrap="tests/bootstrap.php"
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
@@ -19,6 +19,6 @@
     </filter>
     <logging>
         <log type="coverage-text" target="php://stdout"/>
-    </logging>    
+    </logging>
 </phpunit>
 
