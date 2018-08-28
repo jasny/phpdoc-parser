@@ -18,11 +18,10 @@ class RegExpTag extends AbstractTag
     protected $regexp;
 
     /**
-     * Class constructor.
-     * .
+     * Class constructor
+     *
      * @param string         $name
      * @param string         $regexp
-     * @parma callable|null  $apply   Apply callback on matches
      */
     public function __construct(string $name, string $regexp)
     {
@@ -42,7 +41,7 @@ class RegExpTag extends AbstractTag
     }
 
     /**
-     * Process an annotation.
+     * Process an annotation
      *
      * @param array  $annotations
      * @param string $value
