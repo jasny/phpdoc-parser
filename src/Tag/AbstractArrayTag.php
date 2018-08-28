@@ -127,6 +127,10 @@ abstract class AbstractArrayTag extends AbstractTag
             $value = $matches['value'];
             settype($value, $this->type);
 
+            if (is_string($key)) {
+                $key = trim($key, '\'"');
+            }
+
             $result[$key] = $value;
         }
 
