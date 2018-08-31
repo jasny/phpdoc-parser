@@ -6,6 +6,7 @@ namespace Jasny\Annotations\Tag\PhpDocumentor;
 
 use Jasny\Annotations\Tag\AbstractTag;
 use Jasny\Annotations\AnnotationException;
+use function Jasny\array_only;
 
 /**
  * Custom logic for PhpDocumentor 'var', 'param' and 'property' tag
@@ -22,19 +23,18 @@ class VarTag extends AbstractTag
      */
     protected $fqsenConvertor;
 
-
     /**
      * Class constructor.
      *
      * @param string        $name            Tag name
-     * @param callable|null $fqsenConverter  Logic to convert class to FQCN
+     * @param callable|null $fqsenConvertor  Logic to convert class to FQCN
      * @param array         $additional      Additional properties
      */
-    public function __construct(string $name, ?callable $fqsenConverter = null, array $additional = [])
+    public function __construct(string $name, ?callable $fqsenConvertor = null, array $additional = [])
     {
         parent::__construct($name);
 
-        $this->fqsenConvertor = $fqsenConverter;
+        $this->fqsenConvertor = $fqsenConvertor;
         $this->additional = $additional;
     }
 
@@ -48,7 +48,6 @@ class VarTag extends AbstractTag
         return $this->additional;
     }
 
-
     /**
      * Process an annotation.
      *
@@ -60,14 +59,17 @@ class VarTag extends AbstractTag
     public function process(array $annotations, string $value): array
     {
         $regexp = '/^(?:(?<type>[^$\s]+)\s*)?(?:\$(?<name>\w+)\s*)?(?:"(?<id>[^"]+)")?/';
+        preg_match($regexp, $value, $props); //regexp won't fail
 
-        if (!preg_match($regexp, $value, $props)) {
-            throw new AnnotationException("Failed to parse '@{$this->name} $value': invalid syntax");
+        if (isset($props['type']) && $props['type'] === '') {
+            unset($props['type']);
         }
 
         if (isset($props['type']) && isset($this->fqsenConvertor)) {
             $props['type'] = call_user_func($this->fqsenConvertor, $props['type']);
         }
+
+        $props = array_only($props, ['type', 'name', 'id']);
 
         $annotations[$this->name] = $props + $this->additional;
 
