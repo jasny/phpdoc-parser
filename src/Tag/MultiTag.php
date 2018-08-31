@@ -73,7 +73,6 @@ class MultiTag implements TagInterface
         return $this->tag;
     }
 
-
     /**
      * Process an annotation.
      *
@@ -107,7 +106,7 @@ class MultiTag implements TagInterface
      * @return void
      * @throws AnnotationException
      */
-    protected function addAnnotation(array &$annotations, string $value, $item): void
+    protected function addAnnotation(array &$annotations, string $value, array $item): void
     {
         if (!isset($this->index)) {
             $annotations[$this->key][] = $item;
@@ -116,7 +115,7 @@ class MultiTag implements TagInterface
 
         $tagName = $this->tag->getName();
 
-        if (!is_array($item) || !isset($item[$this->index])) {
+        if (!isset($item[$this->index])) {
             throw new AnnotationException("Unable to add '@$tagName $value' tag: No {$this->index}");
         }
 
