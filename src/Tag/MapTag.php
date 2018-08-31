@@ -21,18 +21,18 @@ class MapTag extends AbstractArrayTag
      */
     protected function splitValue(string $value): array
     {
-        $regexpKey = '(?:\'(?:[^\']++|\\\\.)*\'|"(?:[^"]++|\\\\.)*"|[^,\'"]+|[\'"])+)';
-        $regexpValue = '(?:\'(?:[^\']++|\\\\.)*\'|(?:"(?:[^"]++|\\\\.)*"|[^,\'"]+|[\'"])+)';
-        $regexp = '/(?<=^|,)(?:(?<key>' . $regexpKey . ')\s*=\s*)?(?<value>' . $regexpValue. ')\s*/';
+        $regexpKey = '(?:\'(?:[^\']++)*\'|"(?:[^"]++)*"|[^,\'"= ]+)';
+        $regexpValue = '(?:\'(?:[^\']++)*\'|(?:"(?:[^"]++)*"|[^,\'"]+|[\'"])+)';
+        $regexp = '/(?<=^|,)\s*(?:(?<key>' . $regexpKey . ')\s*=\s*)?(?<value>' . $regexpValue. ')\s*/';
 
         preg_match_all($regexp, $value, $matches, PREG_PATTERN_ORDER); // regex can't fail
 
-        foreach ($matches[1] as $key) {
+        foreach ($matches['key'] as &$key) {
             if ($key === null || $key === '') {
                 throw new AnnotationException("Failed to parse '@{$this->name} {$value}': invalid syntax");
             }
         }
 
-        return array_combine($matches[0], $matches[1]);
+        return array_combine($matches['key'], $matches['value']);
     }
 }
