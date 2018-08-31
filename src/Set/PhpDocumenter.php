@@ -40,7 +40,7 @@ class PhpDocumenter implements PredefinedSetInterface
     {
         return new TagSet([
             new FlagTag('api'),
-            new RegExpTag('autor', '/^(?:(?<name>(?:[^\<]\S*\s+)*[^\<]\S*)?\s*)?(?:\<(?<email>[^\>]+)\>)?/'),
+            new RegExpTag('author', '/^(?:(?<name>(?:[^\<]\S*\s+)*[^\<]\S*)?\s*)?(?:\<(?<email>[^\>]+)\>)?/'),
             new DescriptionTag('copyright'),
             new WordTag('deprecated', true),
             new ExampleTag('example'),
