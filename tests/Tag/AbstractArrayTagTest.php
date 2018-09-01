@@ -171,6 +171,20 @@ class AbstractArrayTagTest extends TestCase
     }
 
     /**
+     * Test 'process' method, if type is wrong
+     *
+     * @expectedException UnexpectedValueException
+     * @expectedExceptionMessage Unknown type 'zoo'
+     */
+    public function testProcessWrongType()
+    {
+        $tag = new AbstractArrayTagChildTest('foo');
+        $this->setPrivateProperty($tag, 'type', 'zoo');
+
+        $result = $tag->process(['some' => 'value'], 'test, value');
+    }
+
+    /**
      * Test 'process' method, if in splited value keys have quotes
      */
     public function testProcessQuotes()
