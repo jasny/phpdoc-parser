@@ -117,7 +117,6 @@ abstract class AbstractArrayTag extends AbstractTag
                 case 'string': $regex = '/^\s*(["\']?)(?<value>.*)\1\s*$/'; break;
                 case 'int': $regex = '/^\s*(?<value>[\-+]?\d+)\s*$/'; break;
                 case 'float': $regex = '/^\s*(?<value>[\-+]?\d+(?:\.\d+)?(?:e\d+)?)\s*$/'; break;
-                default: throw new \UnexpectedValueException("Unknown type '$this->type'");
             }
 
             if (!preg_match($regex, $item, $matches)) {
