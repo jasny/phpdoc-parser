@@ -27,11 +27,11 @@ Usage
 ```php
 /**
  * The description is ignored. {{@internal As are inline tags.}}
- * 
+ *
  * @important
  * @uses FooReader
  * @internal Why this isn't part of the API
- * 
+ *
  * @param string|callable $first   This is the first param
  * @param int             $second  The second one
  * @return void
@@ -46,14 +46,72 @@ Parse annotations
 
 ```php
 use Jasny\Annotations\AnnotationParser;
-use Jasny\Annotations\PhpDocumenter;
-use Jasny\Annotations\Tag\FlagType;
+use Jasny\Annotations\PhpDocumentor;
+use Jasny\Annotations\Tag\FlagTag;
 
 $doc = (new ReflectionFunction('foo'))->getDocComment();
+$customTags = [
+    new FlagTag('important'),
+    new FlagTag('required')
+];
 
-$customTags = [new FlagTag('important'), new FlagTag('required')];
-$tags = PhpDocumenter::tags()->add($customTags);
+$annotations = getAnnotations($doc, $customTags);
 
-$parser = new AnnotationParser($tags);
-$annotations = $parser->parse($doc);
+/**
+ * Get annotations from given doc comment for given custom tags
+ * @param  string $doc
+ * @param  array  $tags
+ * @return array
+ */
+function getAnnotations(string $doc, array $tags = []): array
+{
+    $tags = PhpDocumentor::tags()->add($tags);
+
+    $parser = new AnnotationParser($tags);
+    $annotations = $parser->parse($doc);
+
+    return $annotations;
+}
 ```
+
+The result will be the following:
+
+```php
+[
+    'important' => true,
+    'uses' => 'FooReader',
+    'internal' => 'Why this isn't part of the API',
+    'params' => [
+        'first' => [
+            'type' => 'string|callable',
+            'name' => 'first',
+        ],
+        'second' => [
+            'type' => 'int',
+            'name' => 'second',
+        ]
+    ],
+    'return' => 'void'
+]
+```
+
+Tags
+---
+
+Here's a list of available tags classes, that should cover most of the use cases:
+
+* [ArrayTag](docs/tags/array.md)
+* [CustomTag](docs/tags/custom.md)
+* [DescriptionTag](docs/tags/description.md)
+* [ExampleTag](docs/tags/example.md)
+* [FlagTag](docs/tags/flag.md)
+* [MapTag](docs/tags/map.md)
+* [MethodTag](docs/tags/method.md)
+* [ModifyTag](docs/tags/modify.md)
+* [MultiTag](docs/tags/multi.md)
+* [NumberTag](docs/tags/number.md)
+* [RegExpTag](docs/tags/regexp.md)
+* [VarTag](docs/tags/var.md)
+* [WordTag](docs/tags/word.md)
+
+
