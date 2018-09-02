@@ -14,15 +14,9 @@ function foo()
 }
 ```
 
-`todo` tag is predefined in `PhpDocumentor::tags()` as an instance of `DescriptionTag`, so we only need to define `note` tag.
+`todo` tag is predefined in `PhpDocumentor::tags()` as an instance of `DescriptionTag`, so we only need to define `note` tag instance.
 
 ```php
-use Jasny\Annotations\{
-    AnnotationParser,
-    PhpDocumentor,
-    DescriptionTag
-};
-
 $doc = (new ReflectionFunction('foo'))->getDocComment();
 $customTags = [new DescriptionTag('note')];
 

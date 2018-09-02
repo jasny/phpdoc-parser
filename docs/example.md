@@ -1,7 +1,7 @@
 ExampleTag
 ===
 
-This class is only intended to work with `example` tag. It's already predefined in `PhpDocumentor::tags()`, so we have no need to define it.
+This class is only intended to work with `example` tag. It's instance is already predefined in `PhpDocumentor::tags()`.
 
 ```php
 /**
@@ -14,12 +14,6 @@ function foo()
 ```
 
 ```php
-use Jasny\Annotations\{
-    AnnotationParser,
-    PhpDocumentor,
-    DescriptionTag
-};
-
 $doc = (new ReflectionFunction('foo'))->getDocComment();
 $annotations = getAnnotations($doc);
 ```

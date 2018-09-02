@@ -1,9 +1,9 @@
 CustomTag
 ===
 
-`CustomTag` class can be used to create a tag with custom behaviour right during script execution.
+`CustomTag` class can be used to create a tag with custom behaviour right during script execution, without the need to predefine a separate tag class.
 
-Having a following class:
+Having a following class definition:
 
 ```php
 class Foo
@@ -15,15 +15,9 @@ class Foo
 }
 ```
 
-we obtain annotations for `value` property in the following way:
+we define custom parse function and obtain annotations:
 
 ```php
-use Jasny\Annotations\{
-    AnnotationParser,
-    PhpDocumentor,
-    CustomTag
-};
-
 $process = function(array $annotations, string $value) {
     $numbers = explode(',', $value);
     $annotations[$this->name] = array_sum($numbers);
@@ -37,7 +31,7 @@ $customTags = [new CustomTag('sum', $process)];
 $annotations = getAnnotations($doc, $customTags);
 ```
 
-`$process` function will be applyed to parsing `number` tag value, so the result will be
+`$process` function will be applyed to parsing `number` tag value. The result will be
 
 ```php
 [

@@ -80,7 +80,7 @@ The result will be the following:
 [
     'important' => true,
     'uses' => 'FooReader',
-    'internal' => 'Why this isn't part of the API',
+    'internal' => 'Why this isn\'t part of the API',
     'params' => [
         'first' => [
             'type' => 'string|callable',
