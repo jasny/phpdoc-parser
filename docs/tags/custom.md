@@ -15,7 +15,7 @@ class Foo
 }
 ```
 
-we define custom parse function and obtain annotations:
+we define custom parse function, and then obtain annotations:
 
 ```php
 $process = function(array $annotations, string $value) {
