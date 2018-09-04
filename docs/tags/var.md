@@ -1,7 +1,7 @@
 VarTag
 ===
 
-Is used for processing `var`, `property` and `param` tags.
+Is used for processing `@var`, `@property` and `@param` tags.
 
 ```php
 /**
@@ -13,7 +13,7 @@ class Foo
 }
 ```
 
-For `property` and `param` tags it's better to use a wrapper `MultiTag`, to group them in `properies` and `params` arrays (see [MultiTag](docs/tags/multi.md) for an example).
+For `@property` and `@param` tags it's better to use a wrapper `MultiTag`, to group them in `properies` and `params` arrays (see [MultiTag](multi.md) for an example).
 
 All these three tags are already included in `PhpDocumentor::tags()`, but still here's a simple example.
 

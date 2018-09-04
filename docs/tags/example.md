@@ -1,7 +1,7 @@
 ExampleTag
 ===
 
-This class is only intended to work with `example` tag. It's instance is already predefined in `PhpDocumentor::tags()`.
+This class is only intended to work with `@example` tag. It's instance is already predefined in `PhpDocumentor::tags()`.
 
 ```php
 /**

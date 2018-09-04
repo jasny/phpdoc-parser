@@ -20,7 +20,8 @@ class Foo
 ```php
 $postProcess = function(array $annotations, array $tagAnnotations, string $value) {
     //Here $tagAnnotations is ['return' => 'Bar'], and $annotations
-    //contain data of other tags, in this case it is ['todo' => 'Make sure method does not return Foo instead of Bar']
+    //contain data of other tags, in this case it is
+    //['todo' => 'Make sure method does not return Foo instead of Bar']
 
     $annotations = array_merge($annotations, $tagAnnotations);
     $annotations['class_exists'] = class_exists($annotations['return']); //Add some data

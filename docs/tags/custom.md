@@ -32,7 +32,7 @@ $annotations = getAnnotations($doc, $customTags);
 var_export($annotations);
 ```
 
-`$process` function will be applyed to parsing `number` tag value. The result will be
+`$process` function will be applyed to parsing `@sum` tag value. It's also binded to tag instance, so we can use `$this` inside it. The result will be
 
 ```php
 [

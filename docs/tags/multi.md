@@ -14,7 +14,13 @@ class Foo
 }
 ```
 
-There's already a `MultiTag` wrapper aroung `method` tag in `PhpDocumentor::tags()`, but for the sake of example we'll reinit it here, as if it's not there yet.
+There's already a `MultiTag` wrapper aroung `@method` tag in `PhpDocumentor::tags()`, but for the sake of example we'll reinit it here, as if it's not there yet.
+
+`MultiTag` constructor accepts the following parameters:
+
+* name
+* tag, that will be grouped
+* tag field name, which value will be used as a key in result array
 
 ```php
 $doc = (new ReflectionClass('Foo'))->getDocComment();

@@ -45,14 +45,15 @@ function foo($first, int $second)
 Parse annotations
 
 ```php
-use Jasny\Annotations\AnnotationParser;
-use Jasny\Annotations\PhpDocumentor;
-use Jasny\Annotations\Tag\FlagTag;
+use Jasny\Annotations\{
+    AnnotationParser,
+    PhpDocumentor,
+    Tag\FlagTag
+}
 
 $doc = (new ReflectionFunction('foo'))->getDocComment();
 $customTags = [
-    new FlagTag('important'),
-    new FlagTag('required')
+    new FlagTag('important')
 ];
 
 $annotations = getAnnotations($doc, $customTags);
