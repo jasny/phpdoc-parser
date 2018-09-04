@@ -77,23 +77,43 @@ class MethodTag extends AbstractTag
                 throw new AnnotationException("Failed to parse '@{$this->name} {$value}': invalid syntax");
             }
 
-            if (isset($param['type']) && $param['type'] === '') {
-                unset($param['type']);
-            }
+            $this->processParamType($param);
+            $this->processParamDefault($param);
 
-            if (isset($param['type']) && isset($this->fqsenConvertor)) {
-                $param['type'] = call_user_func($this->fqsenConvertor, $param['type']);
-            }
-
-            if (isset($param['default'])) {
-                $param['default'] = trim($param['default'], '"\'');
-            }
-
-            $param = array_only($param, ['type', 'name', 'default']);
-
-            $params[$param['name']] = $param;
+            $params[$param['name']] = array_only($param, ['type', 'name', 'default']);
         }
 
         return $params;
     }
+
+    /**
+     * Process type property of parameter
+     *
+     * @param array $param
+     * @return void
+     */
+    protected function processParamType(array &$param): void
+    {
+        if (isset($param['type']) && $param['type'] === '') {
+            unset($param['type']);
+        }
+
+        if (isset($param['type']) && isset($this->fqsenConvertor)) {
+            $param['type'] = call_user_func($this->fqsenConvertor, $param['type']);
+        }
+    }
+
+    /**
+     * Process default property of parameter
+     *
+     * @param array $param
+     * @return void
+     */
+    protected function processParamDefault(array &$param): void
+    {
+        if (isset($param['default'])) {
+            $param['default'] = trim($param['default'], '"\'');
+        }
+    }
 }
+
