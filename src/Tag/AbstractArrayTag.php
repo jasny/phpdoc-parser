@@ -105,7 +105,7 @@ abstract class AbstractArrayTag extends AbstractTag
      * Get regular expression to extract the value
      *
      * @return string
-     * @throws UnexpectedValueException
+     * @throws \UnexpectedValueException
      */
     protected function getExtractValueRegex(): string
     {
