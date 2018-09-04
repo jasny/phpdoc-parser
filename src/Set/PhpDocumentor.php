@@ -25,6 +25,7 @@ class PhpDocumentor implements PredefinedSetInterface
 {
     /**
      * Disable instantiation.
+     * @codeCoverageIgnore
      */
     private function __construct()
     {

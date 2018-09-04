@@ -5,6 +5,10 @@ namespace Jasny\Annotations\Tests\Tag;
 use Jasny\Annotations\Tag\FlagTag;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Jasny\Annotations\Tag\FlagTag
+ * @covers \Jasny\Annotations\Tag\AbstractTag
+ */
 class FlagTagTest extends TestCase
 {
     public function testGetName()

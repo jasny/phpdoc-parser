@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Jasny\Annotations\Tag\CustomTag
+ * @covers \Jasny\Annotations\Tag\AbstractTag
  */
 class CustomTagTest extends TestCase
 {

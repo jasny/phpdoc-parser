@@ -9,6 +9,7 @@ use TypeError;
 
 /**
  * @covers \Jasny\Annotations\Tag\NumberTag
+ * @covers \Jasny\Annotations\Tag\AbstractTag
  */
 class NumberTagTest extends TestCase
 {
@@ -143,6 +144,6 @@ class NumberTagTest extends TestCase
         $this->expectExceptionMessage($exceptionMessage);
 
         $tag = new NumberTag('foo', $type, $min, $max);
-        $result = $tag->process(['some' => 'value'], $value);
+        $tag->process(['some' => 'value'], $value);
     }
 }

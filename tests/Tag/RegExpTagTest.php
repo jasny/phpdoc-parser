@@ -7,6 +7,7 @@ use Jasny\Annotations\Tag\RegExpTag;
 
 /**
  * @covers \Jasny\Annotations\Tag\RegExpTag
+ * @covers \Jasny\Annotations\Tag\AbstractTag
  */
 class RegExpTagTest extends TestCase
 {

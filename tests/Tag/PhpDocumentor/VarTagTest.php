@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Jasny\Annotations\Tag\PhpDocumentor\VarTag
+ * @covers \Jasny\Annotations\Tag\AbstractTag
  */
 class VarTagTest extends TestCase
 {

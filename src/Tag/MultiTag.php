@@ -106,7 +106,7 @@ class MultiTag implements TagInterface, ProxyTagInterface
      * @return void
      * @throws AnnotationException
      */
-    protected function addAnnotation(array &$annotations, string $value, array $item): void
+    protected function addAnnotation(array &$annotations, string $value, $item): void
     {
         if (!isset($this->index)) {
             $annotations[$this->key][] = $item;

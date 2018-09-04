@@ -9,6 +9,7 @@ use Jasny\Annotations\Tag\ArrayTag;
 /**
  * @covers \Jasny\Annotations\Tag\ArrayTag
  * @covers \Jasny\Annotations\Tag\AbstractArrayTag
+ * @covers \Jasny\Annotations\Tag\AbstractTag
  */
 class ArrayTagTest extends TestCase
 {

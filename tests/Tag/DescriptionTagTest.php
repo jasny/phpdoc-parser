@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Jasny\Annotations\Tag\DescriptionTag
+ * @covers \Jasny\Annotations\Tag\AbstractTag
  */
 class DescriptionTagTest extends TestCase
 {
