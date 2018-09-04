@@ -6,6 +6,7 @@ namespace Jasny\Annotations\Tag\PhpDocumentor;
 
 use Jasny\Annotations\Tag\AbstractTag;
 use Jasny\Annotations\AnnotationException;
+use function Jasny\array_only as array_only;
 
 /**
  * Custom logic for PhpDocumentor 'method' tag
@@ -21,13 +22,13 @@ class MethodTag extends AbstractTag
      * Class constructor.
      *
      * @param string        $name            Tag name
-     * @param callable|null $fqsenConverter  Logic to convert class to FQCN
+     * @param callable|null $fqsenConvertor  Logic to convert class to FQCN
      */
-    public function __construct(string $name, ?callable $fqsenConverter = null)
+    public function __construct(string $name, ?callable $fqsenConvertor = null)
     {
         parent::__construct($name);
 
-        $this->fqsenConvertor = $fqsenConverter;
+        $this->fqsenConvertor = $fqsenConvertor;
     }
 
     /**
@@ -39,7 +40,7 @@ class MethodTag extends AbstractTag
      */
     public function process(array $annotations, string $value): array
     {
-        $regexp = '/^(?:(?<return_type>\S+)\s+)?(?<name>\w+)\((?<params>[^\)]+)?\)/';
+        $regexp = '/^(?:(?<return_type>\S+)\s+)?(?<name>\w+)\((?<params>[^\)]+)?\)(?:\s+(?<description>.*))?/';
 
         if (!preg_match($regexp, $value, $method)) {
             throw new AnnotationException("Failed to parse '@{$this->name} $value': invalid syntax");
@@ -50,6 +51,7 @@ class MethodTag extends AbstractTag
         }
 
         $method['params'] = isset($method['params']) ? $this->processParams($value, $method['params']) : [];
+        $method = array_only($method, ['return_type', 'name', 'params', 'description']);
 
         $annotations[$this->name] = $method;
 
@@ -75,9 +77,19 @@ class MethodTag extends AbstractTag
                 throw new AnnotationException("Failed to parse '@{$this->name} {$value}': invalid syntax");
             }
 
-            if (isset($param['type']) && isset($this->fqsenConvertor)) {
-                $params['type'] = call_user_func($this->fqsenConvertor, $params['type']);
+            if (isset($param['type']) && $param['type'] === '') {
+                unset($param['type']);
             }
+
+            if (isset($param['type']) && isset($this->fqsenConvertor)) {
+                $param['type'] = call_user_func($this->fqsenConvertor, $param['type']);
+            }
+
+            if (isset($param['default'])) {
+                $param['default'] = trim($param['default'], '"\'');
+            }
+
+            $param = array_only($param, ['type', 'name', 'default']);
 
             $params[$param['name']] = $param;
         }
