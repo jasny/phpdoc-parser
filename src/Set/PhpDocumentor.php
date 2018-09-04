@@ -18,10 +18,10 @@ use Jasny\Annotations\Tag\RegExpTag;
 use Jasny\Annotations\Tag\WordTag;
 
 /**
- * PhpDocumenter definitions
+ * PhpDocumentor definitions
  * @static
  */
-class PhpDocumenter implements PredefinedSetInterface
+class PhpDocumentor implements PredefinedSetInterface
 {
     /**
      * Disable instantiation.
@@ -33,42 +33,42 @@ class PhpDocumenter implements PredefinedSetInterface
     /**
      * Get the tags
      *
-     * @param callable|null $fqsenConverter  Logic to convert class to FQCN
+     * @param callable|null $fqsenConvertor  Logic to convert class to FQCN
      * @return TagSet
      */
-    public static function tags(?callable $fqsenConverter = null): TagSet
+    public static function tags(?callable $fqsenConvertor = null): TagSet
     {
         return new TagSet([
             new FlagTag('api'),
-            new RegExpTag('autor', '/^(?:(?<name>(?:[^\<]\S*\s+)*[^\<]\S*)?\s*)?(?:\<(?<email>[^\>]+)\>)?/'),
+            new RegExpTag('author', '/^(?:(?<name>(?:[^\<]\S*\s+)*[^\<]\S*)?\s*)?(?:\<(?<email>[^\>]+)\>)?/'),
             new DescriptionTag('copyright'),
             new WordTag('deprecated', true),
             new ExampleTag('example'),
             new FlagTag('ignore'),
             new FlagTag('internal'),
             new WordTag('link'),
-            new MultiTag('methods', new MethodTag('method', $fqsenConverter), 'name'),
+            new MultiTag('methods', new MethodTag('method', $fqsenConvertor), 'name'),
             new WordTag('package'),
-            new MultiTag('params', new VarTag('param', $fqsenConverter), 'name'),
-            new MultiTag('properties', new VarTag('property', $fqsenConverter), 'name'),
+            new MultiTag('params', new VarTag('param', $fqsenConvertor), 'name'),
+            new MultiTag('properties', new VarTag('property', $fqsenConvertor), 'name'),
             new MultiTag(
                 'properties',
-                new VarTag('property-read', $fqsenConverter, ['read_only' => true]),
+                new VarTag('property-read', $fqsenConvertor, ['read_only' => true]),
                 'name'
             ),
             new MultiTag(
                 'properties',
-                new VarTag('property-write', $fqsenConverter, ['write_only' => true]),
+                new VarTag('property-write', $fqsenConvertor, ['write_only' => true]),
                 'name'
             ),
-            self::fqsen(new WordTag('return'), $fqsenConverter),
-            self::fqsen(new WordTag('see'), $fqsenConverter),
+            self::fqsen(new WordTag('return'), $fqsenConvertor),
+            self::fqsen(new WordTag('see'), $fqsenConvertor),
             new WordTag('since'),
-            new MultiTag('throws', self::fqsen(new WordTag('throws'), $fqsenConverter)),
+            new MultiTag('throws', self::fqsen(new WordTag('throws'), $fqsenConvertor)),
             new DescriptionTag('todo'),
-            self::fqsen(new WordTag('uses'), $fqsenConverter),
-            self::fqsen(new WordTag('used-by'), $fqsenConverter),
-            new VarTag('var', $fqsenConverter)
+            self::fqsen(new WordTag('uses'), $fqsenConvertor),
+            self::fqsen(new WordTag('used-by'), $fqsenConvertor),
+            new VarTag('var', $fqsenConvertor)
         ]);
     }
 
@@ -76,11 +76,11 @@ class PhpDocumenter implements PredefinedSetInterface
      * Apply FQCN converter if available
      *
      * @param TagInterface  $tag
-     * @param callable|null $fqsenConverter
+     * @param callable|null $fqsenConvertor
      * @return TagInterface
      */
-    protected static function fqsen(TagInterface $tag, ?callable $fqsenConverter): TagInterface
+    protected static function fqsen(TagInterface $tag, ?callable $fqsenConvertor): TagInterface
     {
-        return isset($fqsenConverter) ? new ModifyTag($tag, $fqsenConverter) : $tag;
+        return isset($fqsenConvertor) ? new ModifyTag($tag, $fqsenConvertor) : $tag;
     }
 }

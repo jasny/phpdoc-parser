@@ -9,7 +9,7 @@ use Jasny\Annotations\AnnotationException;
 use function jasny\expect_type;
 
 /**
- * Only use the first word after the tag, ignoring the rest
+ * Only use the first word (that should be a number) after the tag, ignoring the rest
  */
 class NumberTag extends AbstractTag
 {
