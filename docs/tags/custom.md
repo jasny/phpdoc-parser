@@ -29,6 +29,7 @@ $doc = (new ReflectionProperty('Foo', 'value'))->getDocComment();
 $customTags = [new CustomTag('sum', $process)];
 
 $annotations = getAnnotations($doc, $customTags);
+var_export($annotations);
 ```
 
 `$process` function will be applyed to parsing `number` tag value. The result will be

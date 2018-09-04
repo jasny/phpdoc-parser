@@ -22,6 +22,7 @@ $doc = (new ReflectionProperty('Foo', 'value'))->getDocComment();
 $customTags = [new ArrayTag('options')];
 
 $annotations = getAnnotations($doc, $customTags);
+var_export($annotations);
 ```
 
 The result will be

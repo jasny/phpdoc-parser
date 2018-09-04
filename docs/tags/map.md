@@ -14,10 +14,11 @@ class Foo
 ```
 
 ```php
-$doc = (new ReflectionFunction('foo'))->getDocComment();
+$doc = (new ReflectionProperty('Foo', 'value'))->getDocComment();
 $customTags = [new MapTag('options')];
 
 $annotations = getAnnotations($doc, $customTags);
+var_export($annotations);
 ```
 
 Result:

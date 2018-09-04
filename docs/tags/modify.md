@@ -1,54 +1,47 @@
-MethodTag
+ModifyTag
 ===
 
-This class should be used for getting value of `method` tag.
+This class should be used as a wrapper around other tags classes, to modify obtained annotations or to add additional data.
 
 ```php
-/**
- * @method string getBar($first, Bar $second, array $third = []) Method to obtain some extra bar
- */
 class Foo
 {
-
+    /**
+     * @todo Make sure method does not return Foo instead of Bar
+     * @return Bar
+     */
+    public function getBar()
+    {
+        //...
+    }
 }
 ```
 
 ```php
+$postProcess = function(array $annotations, array $tagAnnotations, string $value) {
+    //Here $tagAnnotations is ['return' => 'Bar'], and $annotations
+    //contain data of other tags, in this case it is ['todo' => 'Make sure method does not return Foo instead of Bar']
+
+    $annotations = array_merge($annotations, $tagAnnotations);
+    $annotations['class_exists'] = class_exists($annotations['return']); //Add some data
+
+    return $annotations;
+};
+
 $doc = (new ReflectionClass('Foo'))->getDocComment();
-$customTags = [new MethodTag('getBar')];
+$returnTag = new WordTag('return');
+$customTags = [new ModifyTag($returnTag, $postProcess)];
 
 $annotations = getAnnotations($doc, $customTags);
+var_export($annotations);
 ```
 
-Result:
+Result is smth like:
 
 ```php
 [
-    'getBar' => [
-        'return_type' => 'string',
-        'name' => 'getBar',
-        'params' => [
-            'first' => [
-                'name' => 'first'
-            ],
-            'second' => [
-                'type' => 'Bar',
-                'name' => 'second'
-            ],
-            'third' => [
-                'type' => 'array',
-                'name' => 'third',
-                'default' => '[]'
-            ]
-        ]
-    ]
+    'todo' => 'Make sure method does not return Foo instead of Bar'
+    'return' => 'Bar',
+    'class_exists' => true
 ]
 ```
-
-Method's return type and params types can be extended to full namespaced name, so called FQSEN (Fully Qualified Structural Element Name), if fqsen-converter is provided:
-
-```php
-$customTags = [new MethodTag('getBar', $fqsenConvertor)];
-```
-
-Here `$fqsenConvertor` is a callable, that handles converting class name to unique namespaced name.

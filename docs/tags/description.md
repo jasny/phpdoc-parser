@@ -21,6 +21,7 @@ $doc = (new ReflectionFunction('foo'))->getDocComment();
 $customTags = [new DescriptionTag('note')];
 
 $annotations = getAnnotations($doc, $customTags);
+var_export($annotations);
 ```
 
 That results in

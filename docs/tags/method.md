@@ -18,6 +18,7 @@ $doc = (new ReflectionClass('Foo'))->getDocComment();
 $customTags = [new MethodTag('getBar')];
 
 $annotations = getAnnotations($doc, $customTags);
+var_export($annotations);
 ```
 
 Result:

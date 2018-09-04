@@ -15,7 +15,9 @@ function foo()
 
 ```php
 $doc = (new ReflectionFunction('foo'))->getDocComment();
+
 $annotations = getAnnotations($doc);
+var_export($annotations);
 ```
 
 That results in
