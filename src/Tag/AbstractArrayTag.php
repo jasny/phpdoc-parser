@@ -90,7 +90,6 @@ abstract class AbstractArrayTag extends AbstractTag
         return str_starts_with($value, '(')
             ? preg_replace('/^\(((?:"(?:[^"]++|\\\\.)*"|\'(?:[^\']++|\\\\.)*\'|[^\)]++|\))*)\).*$/', '$1', $value)
             : $value;
-
     }
 
     /**
@@ -100,6 +99,27 @@ abstract class AbstractArrayTag extends AbstractTag
      * @return array
      */
     abstract protected function splitValue(string $value): array;
+
+
+    /**
+     * Get regular expression to extract the value
+     *
+     * @return string
+     * @throws UnexpectedValueException
+     */
+    protected function getExtractValueRegex(): string
+    {
+        switch ($this->type) {
+            case 'string':
+                return '/^\s*(["\']?)(?<value>.*)\1\s*$/';
+            case 'int':
+                return '/^\s*(?<value>[\-+]?\d+)\s*$/';
+            case 'float':
+                return '/^\s*(?<value>[\-+]?\d+(?:\.\d+)?(?:e\d+)?)\s*$/';
+            default:
+                throw new \UnexpectedValueException("Unknown type '$this->type'");
+        }
+    }
 
     /**
      * Process matched items.
@@ -111,14 +131,9 @@ abstract class AbstractArrayTag extends AbstractTag
     {
         $result = [];
 
-        foreach ($items as $key => $item) {
-            switch ($this->type) {
-                case 'string': $regex = '/^\s*(["\']?)(?<value>.*)\1\s*$/'; break;
-                case 'int': $regex = '/^\s*(?<value>[\-+]?\d+)\s*$/'; break;
-                case 'float': $regex = '/^\s*(?<value>[\-+]?\d+(?:\.\d+)?(?:e\d+)?)\s*$/'; break;
-                default: throw new \UnexpectedValueException("Unknown type '$this->type'");
-            }
+        $regex = $this->getExtractValueRegex();
 
+        foreach ($items as $key => $item) {
             if (!preg_match($regex, $item, $matches)) {
                 throw new AnnotationException("invalid value '" . addcslashes(trim($item), "'") . "'");
             }

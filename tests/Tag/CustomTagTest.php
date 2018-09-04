@@ -24,7 +24,6 @@ class CustomTagTest extends TestCase
 
     public function testProcess()
     {
-        /** @var MockObject|\Closure $callback */
         $callback = $this->createCallbackMock($this->once(), [['bar' => 1], 'foo-42'], ['foo' => 42]);
 
         $tag = new CustomTag('foo', $callback);

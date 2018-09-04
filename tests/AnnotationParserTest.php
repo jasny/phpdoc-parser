@@ -32,10 +32,10 @@ class AnnotationParserTest extends TestCase
         ];
 
         $tagset = $this->createMock(TagSet::class);
-        $tagset->method('offsetExists')->willReturnCallback(function($key) use ($tags) {
+        $tagset->expects($this->any())->method('offsetExists')->willReturnCallback(function($key) use ($tags) {
             return isset($tags[$key]);
         });
-        $tagset->method('offsetGet')->willReturnCallback(function($key) use ($tags) {
+        $tagset->expects($this->any())->method('offsetGet')->willReturnCallback(function($key) use ($tags) {
             if (!isset($tags[$key])) {
                 throw new \OutOfRangeException("Unknown tag '@{$key}'");
             }

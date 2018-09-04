@@ -53,10 +53,16 @@ class WordTag extends AbstractTag
      */
     public function process(array $annotations, string $value): array
     {
+        if ($value === '') {
+            $annotations[$this->name] = $this->default;
+            return $annotations;
+        }
+
+        $matches = [];
         $quoted = (str_starts_with($value, '"') || str_starts_with($value, '\'')) &&
             preg_match('/^(?|"((?:[^"]+|\\\\.)*)"|\'((?:[^\']+|\\\\.)*)\')/', $value, $matches);
 
-        $word = $value !== '' ? ($quoted ? $matches[1] : str_before($value, ' ')) : $this->default;
+        $word = $quoted ? $matches[1] : str_before($value, ' ');
         $annotations[$this->name] = $word;
 
         return $annotations;

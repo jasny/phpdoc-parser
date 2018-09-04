@@ -50,11 +50,9 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      */
     public function add(iterable $tags): self
     {
-        if ($tags instanceof \Traversable) {
-            $tags = iterator_to_array($tags, false);
-        }
+        $tagArray = $tags instanceof \Traversable ? iterator_to_array($tags, false) : $tags;
 
-        return new static(array_merge(array_values($this->tags), $tags));
+        return new static(array_merge(array_values($this->tags), $tagArray));
     }
 
     /**
@@ -99,10 +97,10 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
     /**
      * Offset to set.
      *
-     * @param null         $key
+     * @param mixed        $key
      * @param TagInterface $tag  The value to set.
      * @return void
-     * @throws \BadMethodCallException if a key is specified
+     * @throws \BadMethodCallException
      */
     public function offsetSet($key, $tag): void
     {
@@ -114,6 +112,7 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      *
      * @param string $key  Tag name
      * @return void
+     * @throws \BadMethodCallException
      */
     public function offsetUnset($key): void
     {
