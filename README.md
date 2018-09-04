@@ -99,6 +99,44 @@ The result will be the following:
 Tags
 ---
 
+The following tags are already included in `PhpDocumentor::tags()`:
+
+* `@api`
+* `@author`
+* `@copyright`
+* `@deprecated`
+* `@example`
+* `@ignore`
+* `@internal`
+* `@link`
+* `@method` (all methods will be grouped in `methods` array)
+* `@package`
+* `@param` (all params will be grouped in `params` array)
+* `@property` (all properties will be grouped in `properties` array)
+* `@property-read` (also in `properties` array)
+* `@property-write` (also in `properties` array)
+* `@return`
+* `@see`
+* `@since`
+* `@throws`
+* `@todo`
+* `@uses`
+* `@used-by`
+* `@var`
+
+So if you only need to parse those tags, you can simple do:
+
+```php
+//$doc = ...; Get doc-comment string from reflection
+
+$tags = PhpDocumentor::tags();
+$parser = new AnnotationParser($tags);
+$annotations = $parser->parse($doc);
+```
+
+Tags classes
+---
+
 Here's a list of available tags classes, that should cover most of the use cases:
 
 * [ArrayTag](docs/tags/array.md)
@@ -114,5 +152,3 @@ Here's a list of available tags classes, that should cover most of the use cases
 * [RegExpTag](docs/tags/regexp.md)
 * [VarTag](docs/tags/var.md)
 * [WordTag](docs/tags/word.md)
-
-
