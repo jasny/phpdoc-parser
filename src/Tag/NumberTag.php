@@ -6,7 +6,7 @@ namespace Jasny\Annotations\Tag;
 
 use Jasny\Annotations\AnnotationException;
 
-use function jasny\expect_type;
+use function Jasny\expect_type;
 
 /**
  * Only use the first word (that should be a number) after the tag, ignoring the rest
@@ -32,8 +32,8 @@ class NumberTag extends AbstractTag
      * NumberTag constructor.
      *
      * @param string    $name
-     * @param string    $type
-     * @param int|float $mim
+     * @param string    $type  ('int', 'float')
+     * @param int|float $min
      * @param int|float $max
      */
     public function __construct(string $name, string $type = 'int', $min = 0, $max = INF)

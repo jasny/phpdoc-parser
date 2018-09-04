@@ -59,7 +59,7 @@ class WordTag extends AbstractTag
         }
 
         $matches = [];
-        $quoted = (str_starts_with($value, '"') || str_starts_with($value, '\'')) &&
+        $quoted = in_array($value[0], ['"', '\'']) &&
             preg_match('/^(?|"((?:[^"]+|\\\\.)*)"|\'((?:[^\']+|\\\\.)*)\')/', $value, $matches);
 
         $word = $quoted ? $matches[1] : str_before($value, ' ');

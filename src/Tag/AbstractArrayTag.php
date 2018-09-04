@@ -28,7 +28,7 @@ abstract class AbstractArrayTag extends AbstractTag
      */
     public function __construct(string $name, string $type = 'string')
     {
-        if (!in_array($type, ['string', 'int', 'float'])) {
+        if (!in_array($type, ['string', 'int', 'float'], true)) {
             throw new \InvalidArgumentException("Invalid type '$type'");
         }
 
