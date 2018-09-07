@@ -1,4 +1,4 @@
-Jasny Annotations
+Jasny PHPDoc parser
 ===
 
 [![Build Status](https://travis-ci.org/jasny/annotations.svg?branch=master)](https://travis-ci.org/jasny/annotations)
@@ -7,18 +7,18 @@ Jasny Annotations
 [![Packagist Stable Version](https://img.shields.io/packagist/v/jasny/annotations.svg)](https://packagist.org/packages/jasny/annotations)
 [![Packagist License](https://img.shields.io/packagist/l/jasny/annotations.svg)](https://packagist.org/packages/jasny/annotations)
 
-Configurable annotation parser from PHP.
+Configurable DocBlock parser from PHP.
 
 Annotations aren't implemented in PHP itself which is why this component offers a way to use the PHP doc-blocks as a
-place for the well known annotation syntax using the `@` char.
+place for the well known tag syntax using the `@` char.
 
-The Jasny Annotation parser allows you to configure tags including the method how to parse and extract information. This
+The PHPDoc parser allows you to configure tags including the method how to parse and extract information. This
 is inline with phpDocumentor style annotations and differs from for instance Doctrine type annotations.
 
 Installation
 ---
 
-    composer require jasny/annotations
+    composer require jasny/phpdoc-parser
 
 Usage
 ---
@@ -29,11 +29,14 @@ Usage
  *
  * @important
  * @uses FooReader
- * @internal Why this isn't part of the API
+ * @internal Why this isn't part of the API.
+ *   Multi-line is supported.
  *
  * @param string|callable $first   This is the first param
  * @param int             $second  The second one
  * @return void
+ * @throws InvalidArgumentException
+ * @throws DoaminException if first argument is not found
  */
 function foo($first, int $second)
 {
@@ -44,34 +47,19 @@ function foo($first, int $second)
 Parse annotations
 
 ```php
-use Jasny\Annotations\{
-    AnnotationParser,
-    PhpDocumentor,
-    Tag\FlagTag
-}
+use Jasny\PHPDocParser\PHPDocParser;
+use Jasny\PHPDocParser\Set\PhpDocumentor;
+use Jasny\PHPDocParser\Tag\FlagTag;
 
 $doc = (new ReflectionFunction('foo'))->getDocComment();
 $customTags = [
     new FlagTag('important')
 ];
 
-$annotations = getAnnotations($doc, $customTags);
+$tags = PhpDocumentor::tags()->add($tags);
 
-/**
- * Get annotations from given doc comment for given custom tags
- * @param  string $doc
- * @param  array  $tags
- * @return array
- */
-function getAnnotations(string $doc, array $tags = []): array
-{
-    $tags = PhpDocumentor::tags()->add($tags);
-
-    $parser = new AnnotationParser($tags);
-    $annotations = $parser->parse($doc);
-
-    return $annotations;
-}
+$parser = new AnnotationParser($tags);
+$annotations = $parser->parse($doc);
 ```
 
 The result will be the following:
@@ -80,7 +68,7 @@ The result will be the following:
 [
     'important' => true,
     'uses' => 'FooReader',
-    'internal' => 'Why this isn\'t part of the API',
+    'internal' => 'Why this isn\'t part of the API. Mutlti-line is supported',
     'params' => [
         'first' => [
             'type' => 'string|callable',
