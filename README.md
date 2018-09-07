@@ -52,13 +52,13 @@ use Jasny\PHPDocParser\Set\PhpDocumentor;
 use Jasny\PHPDocParser\Tag\FlagTag;
 
 $doc = (new ReflectionFunction('foo'))->getDocComment();
+
 $customTags = [
     new FlagTag('important')
 ];
+$tags = PhpDocumentor::tags()->with($customTags);
 
-$tags = PhpDocumentor::tags()->add($tags);
-
-$parser = new AnnotationParser($tags);
+$parser = new PHPDocParser($tags);
 $annotations = $parser->parse($doc);
 ```
 
@@ -105,7 +105,7 @@ The following tags are already included in `PhpDocumentor::tags()`:
 * `@return`
 * `@see`
 * `@since`
-* `@throws`
+* `@throws` (all exceptions will be grouped in `throws` array)
 * `@todo`
 * `@uses`
 * `@used-by`
