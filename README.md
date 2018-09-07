@@ -25,7 +25,10 @@ Usage
 
 ```php
 /**
- * The description is ignored. {{@internal As are inline tags.}}
+ * The description of foo. This function does a lot of thing
+ *   which are described here.
+ *
+ * Some more text here.
  *
  * @important
  * @uses FooReader
@@ -66,17 +69,20 @@ The result will be the following:
 
 ```php
 [
+    'summery' => "The description of foo",
+    'description' => "The description of foo. This function does a lot of thing which are described here.\n\nSome more text.",
     'important' => true,
     'uses' => 'FooReader',
-    'internal' => 'Why this isn\'t part of the API. Mutlti-line is supported',
+    'internal' => "Why this isn't part of the API. Mutlti-line is supported",
     'params' => [
         'first' => [
-            'type' => 'string|callable',
-            'name' => 'first',
+            'type' => "string|callable",
+            'name' => "first",
+            'description' => "This is the first parm"
         ],
         'second' => [
-            'type' => 'int',
-            'name' => 'second',
+            'type' => "int",
+            'name' => "second",
         ]
     ],
     'return' => 'void'
