@@ -26,11 +26,11 @@ Usage
 ```php
 /**
  * The description is ignored. {{@internal As are inline tags.}}
- * 
+ *
  * @important
  * @uses FooReader
  * @internal Why this isn't part of the API
- * 
+ *
  * @param string|callable $first   This is the first param
  * @param int             $second  The second one
  * @return void
@@ -44,15 +44,110 @@ function foo($first, int $second)
 Parse annotations
 
 ```php
-use Jasny\Annotations\AnnotationParser;
-use Jasny\Annotations\PhpDocumenter;
-use Jasny\Annotations\Tag\FlagType;
+use Jasny\Annotations\{
+    AnnotationParser,
+    PhpDocumentor,
+    Tag\FlagTag
+}
 
 $doc = (new ReflectionFunction('foo'))->getDocComment();
+$customTags = [
+    new FlagTag('important')
+];
 
-$customTags = [new FlagTag('important'), new FlagTag('required')];
-$tags = PhpDocumenter::tags()->add($customTags);
+$annotations = getAnnotations($doc, $customTags);
 
+/**
+ * Get annotations from given doc comment for given custom tags
+ * @param  string $doc
+ * @param  array  $tags
+ * @return array
+ */
+function getAnnotations(string $doc, array $tags = []): array
+{
+    $tags = PhpDocumentor::tags()->add($tags);
+
+    $parser = new AnnotationParser($tags);
+    $annotations = $parser->parse($doc);
+
+    return $annotations;
+}
+```
+
+The result will be the following:
+
+```php
+[
+    'important' => true,
+    'uses' => 'FooReader',
+    'internal' => 'Why this isn\'t part of the API',
+    'params' => [
+        'first' => [
+            'type' => 'string|callable',
+            'name' => 'first',
+        ],
+        'second' => [
+            'type' => 'int',
+            'name' => 'second',
+        ]
+    ],
+    'return' => 'void'
+]
+```
+
+Tags
+---
+
+The following tags are already included in `PhpDocumentor::tags()`:
+
+* `@api`
+* `@author`
+* `@copyright`
+* `@deprecated`
+* `@example`
+* `@ignore`
+* `@internal`
+* `@link`
+* `@method` (all methods will be grouped in `methods` array)
+* `@package`
+* `@param` (all params will be grouped in `params` array)
+* `@property` (all properties will be grouped in `properties` array)
+* `@property-read` (also in `properties` array)
+* `@property-write` (also in `properties` array)
+* `@return`
+* `@see`
+* `@since`
+* `@throws`
+* `@todo`
+* `@uses`
+* `@used-by`
+* `@var`
+
+So if you only need to parse those tags, you can simple do:
+
+```php
+//$doc = ...; Get doc-comment string from reflection
+
+$tags = PhpDocumentor::tags();
 $parser = new AnnotationParser($tags);
 $annotations = $parser->parse($doc);
 ```
+
+Tags classes
+---
+
+Here's a list of available tags classes, that should cover most of the use cases:
+
+* [ArrayTag](docs/tags/array.md)
+* [CustomTag](docs/tags/custom.md)
+* [DescriptionTag](docs/tags/description.md)
+* [ExampleTag](docs/tags/example.md)
+* [FlagTag](docs/tags/flag.md)
+* [MapTag](docs/tags/map.md)
+* [MethodTag](docs/tags/method.md)
+* [ModifyTag](docs/tags/modify.md)
+* [MultiTag](docs/tags/multi.md)
+* [NumberTag](docs/tags/number.md)
+* [RegExpTag](docs/tags/regexp.md)
+* [VarTag](docs/tags/var.md)
+* [WordTag](docs/tags/word.md)
