@@ -15,14 +15,14 @@ class Foo
 }
 ```
 
-we obtain annotations for `value` property:
+we obtain notations for `value` property:
 
 ```php
 $doc = (new ReflectionProperty('Foo', 'value'))->getDocComment();
 $customTags = [new ArrayTag('options')];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 The result will be

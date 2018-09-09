@@ -22,8 +22,8 @@ Params that are accepted by `WordTag` constructor:
 $doc = (new ReflectionClass('Foo'))->getDocComment();
 $customTags = [new WordTag('hello')];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 Result:

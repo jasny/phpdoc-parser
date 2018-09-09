@@ -15,21 +15,21 @@ class Foo
 }
 ```
 
-we define custom parse function, and then obtain annotations:
+we define custom parse function, and then obtain notations:
 
 ```php
-$process = function(array $annotations, string $value) {
+$process = function(array $notations, string $value) {
     $numbers = explode(',', $value);
-    $annotations[$this->name] = array_sum($numbers);
+    $notations[$this->name] = array_sum($numbers);
 
-    return $annotations;
+    return $notations;
 };
 
 $doc = (new ReflectionProperty('Foo', 'value'))->getDocComment();
 $customTags = [new CustomTag('sum', $process)];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 `$process` function will be applyed to parsing `@sum` tag value. It's also binded to tag instance, so we can use `$this` inside it. The result will be

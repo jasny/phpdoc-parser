@@ -145,3 +145,16 @@ Here's a list of available tags classes, that should cover most of the use cases
 * [RegExpTag](docs/tags/regexp.md)
 * [VarTag](docs/tags/var.md)
 * [WordTag](docs/tags/word.md)
+
+The following function is used in tags documentation, for short reference to parsing:
+
+```php
+function getNotations(string $doc, array $tags = []) {
+    $tags = PhpDocumentor::tags()->add($tags);
+
+    $parser = new PhpdocParser($tags);
+    $notations = $parser->parse($doc);
+
+    return $notations;
+}
+```
