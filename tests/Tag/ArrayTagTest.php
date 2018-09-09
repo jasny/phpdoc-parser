@@ -1,15 +1,15 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
 use Jasny\TestHelper;
 use PHPUnit\Framework\TestCase;
-use Jasny\Annotations\Tag\ArrayTag;
+use Jasny\PhpdocParser\Tag\ArrayTag;
 
 /**
- * @covers \Jasny\Annotations\Tag\ArrayTag
- * @covers \Jasny\Annotations\Tag\AbstractArrayTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\ArrayTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractArrayTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class ArrayTagTest extends TestCase
 {
@@ -132,7 +132,7 @@ class ArrayTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Failed to parse '@foo 10, 33.2, 20': invalid value '33.2'
      */
     public function testProcessInvalidInt()
@@ -142,7 +142,7 @@ class ArrayTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Failed to parse '@foo 10, 33.., 20': invalid value '33..'
      */
     public function testProcessInvalidFloat()

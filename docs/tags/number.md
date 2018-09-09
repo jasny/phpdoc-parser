@@ -24,8 +24,8 @@ class Foo
 $doc = (new ReflectionProperty('Foo', 'amount'))->getDocComment();
 $customTags = [new NumberTag('version', 'int', 2, 5)];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 Result:

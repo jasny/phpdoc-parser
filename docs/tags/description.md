@@ -20,8 +20,8 @@ function foo()
 $doc = (new ReflectionFunction('foo'))->getDocComment();
 $customTags = [new DescriptionTag('note')];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 That results in

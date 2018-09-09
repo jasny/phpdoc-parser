@@ -1,13 +1,13 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
-use Jasny\Annotations\Tag\FlagTag;
+use Jasny\PhpdocParser\Tag\FlagTag;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\Tag\FlagTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\FlagTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class FlagTagTest extends TestCase
 {

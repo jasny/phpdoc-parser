@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations;
+namespace Jasny\PhpdocParser;
 
 use function Jasny\expect_type;
 use function Jasny\array_without;

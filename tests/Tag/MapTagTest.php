@@ -1,15 +1,15 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
 use Jasny\TestHelper;
 use PHPUnit\Framework\TestCase;
-use Jasny\Annotations\Tag\MapTag;
+use Jasny\PhpdocParser\Tag\MapTag;
 
 /**
- * @covers \Jasny\Annotations\Tag\MapTag
- * @covers \Jasny\Annotations\Tag\AbstractArrayTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\MapTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractArrayTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class MapTagTest extends TestCase
 {
@@ -136,7 +136,7 @@ class MapTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Failed to parse '@foo red = 66, green, blue = 244': no key for value 'green'
      */
     public function testProcessInvalidNoKey()
@@ -146,7 +146,7 @@ class MapTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Failed to parse '@foo red = 66, =229, blue = 244': no key for value '229'
      */
     public function testProcessInvalidBlankKey()
@@ -156,7 +156,7 @@ class MapTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Failed to parse '@foo a = 10, b = 33.2, c = 20': invalid value '33.2'
      */
     public function testProcessInvalidInt()
@@ -166,7 +166,7 @@ class MapTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Failed to parse '@foo a = 10, b = 33.., c = 20': invalid value '33..'
      */
     public function testProcessInvalidFloat()

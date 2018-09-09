@@ -27,8 +27,8 @@ $doc = (new ReflectionClass('Foo'))->getDocComment();
 $methodTag = new MethodTag('method', $fqsenConverter); //$fqsenConverter can be specified or ommited
 $customTags = [new MultiTag('methods', $methodTag, 'name')];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 Result:

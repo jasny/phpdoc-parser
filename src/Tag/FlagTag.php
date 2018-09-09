@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
-use Jasny\Annotations\Tag\AbstractTag;
+use Jasny\PhpdocParser\Tag\AbstractTag;
 
 /**
  * Tag is a flag, value is ignored.
@@ -12,16 +12,16 @@ use Jasny\Annotations\Tag\AbstractTag;
 class FlagTag extends AbstractTag
 {
     /**
-     * Process an annotation.
+     * Process a notation.
      *
-     * @param array $annotations
+     * @param array $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
-        $annotations[$this->name] = true;
+        $notations[$this->name] = true;
 
-        return $annotations;
+        return $notations;
     }
 }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
-use Jasny\Annotations\AnnotationException;
+use Jasny\PhpdocParser\PhpdocException;
 
 use function Jasny\str_starts_with;
 
@@ -18,7 +18,6 @@ abstract class AbstractArrayTag extends AbstractTag
      * @enum 'string', 'int', 'float'
      */
     protected $type;
-
 
     /**
      * Class constructor.
@@ -47,20 +46,19 @@ abstract class AbstractArrayTag extends AbstractTag
         return $this->type;
     }
 
-
     /**
-     * Process the annotation
+     * Process the notation
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
         if ($value === '') {
-            $annotations[$this->name] = [];
+            $notations[$this->name] = [];
 
-            return $annotations;
+            return $notations;
         }
 
         $itemString = $this->stripParentheses($value);
@@ -69,14 +67,14 @@ abstract class AbstractArrayTag extends AbstractTag
 
         try {
             $array = $this->toArray($items);
-        } catch (AnnotationException $exception) {
-            throw new AnnotationException("Failed to parse '@{$this->name} {$value}': " . $exception->getMessage(),
+        } catch (PhpdocException $exception) {
+            throw new PhpdocException("Failed to parse '@{$this->name} {$value}': " . $exception->getMessage(),
                 0, $exception);
         }
 
-        $annotations[$this->name] = $array;
+        $notations[$this->name] = $array;
 
-        return $annotations;
+        return $notations;
     }
 
     /**
@@ -135,7 +133,7 @@ abstract class AbstractArrayTag extends AbstractTag
 
         foreach ($items as $key => $item) {
             if (!preg_match($regex, $item, $matches)) {
-                throw new AnnotationException("invalid value '" . addcslashes(trim($item), "'") . "'");
+                throw new PhpdocException("invalid value '" . addcslashes(trim($item), "'") . "'");
             }
 
             $value = $matches['value'];

@@ -1,13 +1,13 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag\PhpDocumentor;
+namespace Jasny\PhpdocParser\Tests\Tag\PhpDocumentor;
 
-use Jasny\Annotations\Tag\PhpDocumentor\MethodTag;
+use Jasny\PhpdocParser\Tag\PhpDocumentor\MethodTag;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\Tag\PhpDocumentor\MethodTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\PhpDocumentor\MethodTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class MethodTagTest extends TestCase
 {
@@ -121,7 +121,7 @@ class MethodTagTest extends TestCase
      * Test 'process' method, if exception should be thrown
      *
      * @dataProvider processExceptionProvider
-     * @expectedException Jasny\Annotations\AnnotationException
+     * @expectedException Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessageRegExp /Failed to parse '@foo .*?': invalid syntax/
      */
     public function testProcessException($value)

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag\PhpDocumentor;
+namespace Jasny\PhpdocParser\Tag\PhpDocumentor;
 
-use Jasny\Annotations\Tag\AbstractTag;
-use Jasny\Annotations\AnnotationException;
+use Jasny\PhpdocParser\Tag\AbstractTag;
+use Jasny\PhpdocParser\PhpdocException;
 use function Jasny\array_only;
 
 /**
@@ -14,18 +14,18 @@ use function Jasny\array_only;
 class ExampleTag extends AbstractTag
 {
     /**
-     * Process an annotation.
+     * Process a notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
         $regexp = '/^(?<location>(?:[^"]\S*|"[^"]+"))(?:\s*(?<start_line>\d+)(?:\s*(?<number_of_lines>\d+))?)?/';
 
         if (!preg_match($regexp, $value, $matches)) {
-            throw new AnnotationException("Failed to parse '@{$this->name} $value': invalid syntax");
+            throw new PhpdocException("Failed to parse '@{$this->name} $value': invalid syntax");
         }
 
         $matches['location'] = trim($matches['location'], '"');
@@ -40,8 +40,8 @@ class ExampleTag extends AbstractTag
 
         $matches = array_only($matches, ['location', 'start_line', 'number_of_lines']);
 
-        $annotations[$this->name] = $matches;
+        $notations[$this->name] = $matches;
 
-        return $annotations;
+        return $notations;
     }
 }

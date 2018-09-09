@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
-use Jasny\Annotations\TagInterface;
+use Jasny\PhpdocParser\TagInterface;
 
 /**
  * Modify the behavior of a tag
@@ -55,17 +55,17 @@ class ModifyTag implements TagInterface, ProxyTagInterface
     }
 
     /**
-     * Process an annotation.
+     * Process an notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
-        $tagAnnotations = $this->tag->process([], $value);
-        $annotations = call_user_func($this->logic, $annotations, $tagAnnotations, $value);
+        $tagNotations = $this->tag->process([], $value);
+        $notations = call_user_func($this->logic, $notations, $tagNotations, $value);
 
-        return $annotations;
+        return $notations;
     }
 }

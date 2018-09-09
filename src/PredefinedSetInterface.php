@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations;
+namespace Jasny\PhpdocParser;
 
-use Jasny\Annotations\TagSet;
+use Jasny\PhpdocParser\TagSet;
 
 /**
  * Interface for predefined sets
