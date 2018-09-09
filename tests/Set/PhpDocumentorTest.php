@@ -1,14 +1,14 @@
 <?php
 
-namespace Jasny\Annotations\Tests;
+namespace Jasny\PhpdocParser\Tests;
 
-use Jasny\Annotations\TagSet;
-use Jasny\Annotations\TagInterface;
-use Jasny\Annotations\Set\PhpDocumentor;
+use Jasny\PhpdocParser\TagSet;
+use Jasny\PhpdocParser\TagInterface;
+use Jasny\PhpdocParser\Set\PhpDocumentor;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\Set\PhpDocumentor
+ * @covers \Jasny\PhpdocParser\Set\PhpDocumentor
  */
 class PhpDocumentorTest extends TestCase
 {

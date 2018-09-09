@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
-use Jasny\Annotations\TagInterface;
+use Jasny\PhpdocParser\TagInterface;
 
 /**
  * Base class for tags

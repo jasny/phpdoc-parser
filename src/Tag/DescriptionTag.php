@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
 /**
- * The complete description following the tag is the annotation value.
+ * The complete description following the tag is the notation value.
  */
 class DescriptionTag extends AbstractTag
 {
     /**
-     * Process an annotation
+     * Process a notation
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
-        $annotations[$this->name] = $value;
+        $notations[$this->name] = $value;
 
-        return $annotations;
+        return $notations;
     }
 }

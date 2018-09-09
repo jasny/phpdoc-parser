@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag\PhpDocumentor;
+namespace Jasny\PhpdocParser\Tag\PhpDocumentor;
 
-use Jasny\Annotations\Tag\AbstractTag;
-use Jasny\Annotations\AnnotationException;
+use Jasny\PhpdocParser\Tag\AbstractTag;
+use Jasny\PhpdocParser\PhpdocException;
 use function Jasny\array_only as array_only;
 
 /**
@@ -32,18 +32,18 @@ class MethodTag extends AbstractTag
     }
 
     /**
-     * Process an annotation.
+     * Process a notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
         $regexp = '/^(?:(?<return_type>\S+)\s+)?(?<name>\w+)\((?<params>[^\)]+)?\)(?:\s+(?<description>.*))?/';
 
         if (!preg_match($regexp, $value, $method)) {
-            throw new AnnotationException("Failed to parse '@{$this->name} $value': invalid syntax");
+            throw new PhpdocException("Failed to parse '@{$this->name} $value': invalid syntax");
         }
 
         if (isset($method['return_type']) && isset($this->fqsenConvertor)) {
@@ -53,13 +53,13 @@ class MethodTag extends AbstractTag
         $method['params'] = isset($method['params']) ? $this->processParams($value, $method['params']) : [];
         $method = array_only($method, ['return_type', 'name', 'params', 'description']);
 
-        $annotations[$this->name] = $method;
+        $notations[$this->name] = $method;
 
-        return $annotations;
+        return $notations;
     }
 
     /**
-     * Process parameters from method annotation
+     * Process parameters from method notation
      *
      * @param string $value  Input value
      * @param string $raw    Parameters string
@@ -74,7 +74,7 @@ class MethodTag extends AbstractTag
 
         foreach ($rawParams as $rawParam) {
             if (!preg_match($regexp, $rawParam, $param)) {
-                throw new AnnotationException("Failed to parse '@{$this->name} {$value}': invalid syntax");
+                throw new PhpdocException("Failed to parse '@{$this->name} {$value}': invalid syntax");
             }
 
             $this->processParamType($param);

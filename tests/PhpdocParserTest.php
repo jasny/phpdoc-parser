@@ -1,17 +1,17 @@
 <?php
 
-namespace Jasny\Annotations\Tests;
+namespace Jasny\PhpdocParser\Tests;
 
-use Jasny\Annotations\AnnotationParser;
-use Jasny\Annotations\TagInterface;
-use Jasny\Annotations\TagSet;
+use Jasny\PhpdocParser\PhpdocParser;
+use Jasny\PhpdocParser\TagInterface;
+use Jasny\PhpdocParser\TagSet;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\AnnotationParser
+ * @covers \Jasny\PhpdocParser\PhpdocParser
  */
-class AnnotationParserTest extends TestCase
+class PhpdocParserTest extends TestCase
 {
     /**
      * @var TagInterface[]|MockObject[]
@@ -19,7 +19,7 @@ class AnnotationParserTest extends TestCase
     protected $tags;
 
     /**
-     * @var AnnotationParser
+     * @var PhpdocParser
      */
     protected $parser;
 
@@ -43,7 +43,7 @@ class AnnotationParserTest extends TestCase
         });
 
         $this->tags = $tags;
-        $this->parser = new AnnotationParser($tagset);
+        $this->parser = new PhpdocParser($tagset);
     }
 
     public function testParseFlag()
@@ -129,7 +129,7 @@ DOC;
         $doc = <<<DOC
 /**
  * This should be ignored, so should {@qux this}
- * 
+ *
  * @foo hi
  * @bar
  * @foo bye

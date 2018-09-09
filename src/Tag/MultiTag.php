@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
-use Jasny\Annotations\TagInterface;
-use Jasny\Annotations\AnnotationException;
+use Jasny\PhpdocParser\TagInterface;
+use Jasny\PhpdocParser\PhpdocException;
 
 /**
  * Tag can exist multiple times
@@ -31,7 +31,7 @@ class MultiTag implements TagInterface, ProxyTagInterface
     /**
      * MultiTag constructor.
      *
-     * @param string       $key    Annotation key
+     * @param string       $key    Notation key
      * @param TagInterface $tag    Representation of a single tag
      * @param string|null  $index  Item key to index by
      */
@@ -44,7 +44,7 @@ class MultiTag implements TagInterface, ProxyTagInterface
 
 
     /**
-     * Get the annotation key.
+     * Get the notation key.
      *
      * @return string
      */
@@ -74,58 +74,58 @@ class MultiTag implements TagInterface, ProxyTagInterface
     }
 
     /**
-     * Process an annotation.
+     * Process an notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
-     * @throws AnnotationException
+     * @throws PhpdocException
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
         $tagName = $this->tag->getName();
 
-        $tagAnnotations = $this->tag->process([], $value);
+        $tagNotations = $this->tag->process([], $value);
 
-        if (count($tagAnnotations) !== 1) {
+        if (count($tagNotations) !== 1) {
             throw new \LogicException("Unable to parse '@{$tagName}' tag: Multi tags must result in "
-                . "exactly one annotation per tag.");
+                . "exactly one notation per tag.");
         }
 
-        $this->addAnnotation($annotations, $value, reset($tagAnnotations));
+        $this->addNotation($notations, $value, reset($tagNotations));
 
-        return $annotations;
+        return $notations;
     }
 
     /**
-     * Add annotation.
+     * Add notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @param mixed  $item
      * @return void
-     * @throws AnnotationException
+     * @throws PhpdocException
      */
-    protected function addAnnotation(array &$annotations, string $value, $item): void
+    protected function addNotation(array &$notations, string $value, $item): void
     {
         if (!isset($this->index)) {
-            $annotations[$this->key][] = $item;
+            $notations[$this->key][] = $item;
             return;
         }
 
         $tagName = $this->getName();
 
         if (!is_array($item) || !isset($item[$this->index])) {
-            throw new AnnotationException("Unable to add '@{$tagName} $value' tag: No {$this->index}");
+            throw new PhpdocException("Unable to add '@{$tagName} $value' tag: No {$this->index}");
         }
 
         $index = $item[$this->index];
 
-        if (isset($annotations[$this->key][$index])) {
-            throw new AnnotationException("Unable to add '@{$tagName} $value' tag: Duplicate {$this->index} "
+        if (isset($notations[$this->key][$index])) {
+            throw new PhpdocException("Unable to add '@{$tagName} $value' tag: Duplicate {$this->index} "
                 . "'$index'");
         }
 
-        $annotations[$this->key][$index] = $item;
+        $notations[$this->key][$index] = $item;
     }
 }

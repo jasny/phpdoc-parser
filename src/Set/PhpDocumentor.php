@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Set;
+namespace Jasny\PhpdocParser\Set;
 
-use Jasny\Annotations\PredefinedSetInterface;
-use Jasny\Annotations\Tag\MultiTag;
-use Jasny\Annotations\Tag\PhpDocumentor\ExampleTag;
-use Jasny\Annotations\Tag\PhpDocumentor\MethodTag;
-use Jasny\Annotations\Tag\PhpDocumentor\VarTag;
-use Jasny\Annotations\TagInterface;
-use Jasny\Annotations\TagSet;
-use Jasny\Annotations\Tag\ModifyTag;
-use Jasny\Annotations\Tag\DescriptionTag;
-use Jasny\Annotations\Tag\FlagTag;
-use Jasny\Annotations\Tag\RegExpTag;
-use Jasny\Annotations\Tag\WordTag;
+use Jasny\PhpdocParser\PredefinedSetInterface;
+use Jasny\PhpdocParser\Tag\MultiTag;
+use Jasny\PhpdocParser\Tag\PhpDocumentor\ExampleTag;
+use Jasny\PhpdocParser\Tag\PhpDocumentor\MethodTag;
+use Jasny\PhpdocParser\Tag\PhpDocumentor\VarTag;
+use Jasny\PhpdocParser\TagInterface;
+use Jasny\PhpdocParser\TagSet;
+use Jasny\PhpdocParser\Tag\ModifyTag;
+use Jasny\PhpdocParser\Tag\DescriptionTag;
+use Jasny\PhpdocParser\Tag\FlagTag;
+use Jasny\PhpdocParser\Tag\RegExpTag;
+use Jasny\PhpdocParser\Tag\WordTag;
 
 /**
  * PhpDocumentor definitions

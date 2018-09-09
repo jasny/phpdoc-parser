@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag\PhpDocumentor;
+namespace Jasny\PhpdocParser\Tag\PhpDocumentor;
 
-use Jasny\Annotations\Tag\AbstractTag;
-use Jasny\Annotations\AnnotationException;
+use Jasny\PhpdocParser\Tag\AbstractTag;
+use Jasny\PhpdocParser\notation;
 use function Jasny\array_only;
 
 /**
@@ -49,14 +49,14 @@ class VarTag extends AbstractTag
     }
 
     /**
-     * Process an annotation.
+     * Process a notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
-     * @throws AnnotationException
+     * @throws notation
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
         $regexp = '/^(?:(?<type>[^$\s]+)\s*)?(?:\$(?<name>\w+)\s*)?(?:"(?<id>[^"]+)")?/';
         preg_match($regexp, $value, $props); //regexp won't fail
@@ -71,8 +71,8 @@ class VarTag extends AbstractTag
 
         $props = array_only($props, ['type', 'name', 'id']);
 
-        $annotations[$this->name] = $props + $this->additional;
+        $notations[$this->name] = $props + $this->additional;
 
-        return $annotations;
+        return $notations;
     }
 }

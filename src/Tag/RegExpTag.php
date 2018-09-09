@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
-use Jasny\Annotations\AnnotationException;
-use Jasny\Annotations\Tag\AbstractTag;
+use Jasny\PhpdocParser\PhpdocException;
+use Jasny\PhpdocParser\Tag\AbstractTag;
 
 /**
  * Process using a regular expression
@@ -41,20 +41,20 @@ class RegExpTag extends AbstractTag
     }
 
     /**
-     * Process an annotation
+     * Process a notation
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
         if (!preg_match($this->regexp, $value, $matches)) {
-            throw new AnnotationException("Failed to parse '@{$this->name} $value': invalid syntax");
+            throw new PhpdocException("Failed to parse '@{$this->name} $value': invalid syntax");
         }
 
-        $annotations[$this->name] = $matches;
+        $notations[$this->name] = $matches;
 
-        return $annotations;
+        return $notations;
     }
 }

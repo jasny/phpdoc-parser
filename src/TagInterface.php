@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations;
+namespace Jasny\PhpdocParser;
 
 interface TagInterface
 {
@@ -14,11 +14,11 @@ interface TagInterface
     public function getName(): string;
 
     /**
-     * Process an annotation.
+     * Process a notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array;
+    public function process(array $notations, string $value): array;
 }

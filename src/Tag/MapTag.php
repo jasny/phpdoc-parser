@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
-use Jasny\Annotations\AnnotationException;
+use Jasny\PhpdocParser\PhpdocException;
 
 /**
  * Tag value represents a map (aka associative array).
@@ -30,7 +30,7 @@ class MapTag extends AbstractArrayTag
         foreach ($keys as $pos => $key) {
             if ($key === '') {
                 $item = trim($matches['value'][$pos]);
-                throw new AnnotationException("Failed to parse '@{$this->name} {$value}': no key for value '$item'");
+                throw new PhpdocException("Failed to parse '@{$this->name} {$value}': no key for value '$item'");
             }
         }
 

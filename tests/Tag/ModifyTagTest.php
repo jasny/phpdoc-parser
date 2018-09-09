@@ -1,15 +1,15 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
-use Jasny\Annotations\Tag\ModifyTag;
-use Jasny\Annotations\TagInterface;
+use Jasny\PhpdocParser\Tag\ModifyTag;
+use Jasny\PhpdocParser\TagInterface;
 use Jasny\TestHelper;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @covers \Jasny\Annotations\Tag\ModifyTag
+ * @covers \Jasny\PhpdocParser\Tag\ModifyTag
  */
 class ModifyTagTest extends TestCase
 {

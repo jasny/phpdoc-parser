@@ -1,5 +1,5 @@
 {
-    "name": "jasny/annotations",
+    "name": "jasny/phpdoc-parser",
     "description": "Jasny skeleton library",
     "license": "MIT",
     "type": "library",
@@ -11,8 +11,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/jasny/annotations/issues",
-        "source": "https://github.com/jasny/annotations"
+        "issues": "https://github.com/jasny/phpdoc-parser/issues",
+        "source": "https://github.com/jasny/phpdoc-parser"
     },
     "require": {
         "php": ">=7.1.0",
@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Jasny\\Annotations\\": "src/"
+            "Jasny\\PhpdocParser\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Jasny\\Annotations\\Tests\\": "tests/"
+            "Jasny\\PhpdocParser\\Tests\\": "tests/"
         }
     },
     "scripts": {

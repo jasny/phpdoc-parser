@@ -1,15 +1,15 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
 use PHPUnit\Framework\TestCase;
-use Jasny\Annotations\Tag\NumberTag;
-use Jasny\Annotations\AnnotationException;
+use Jasny\PhpdocParser\Tag\NumberTag;
+use Jasny\PhpdocParser\PhpdocException;
 use TypeError;
 
 /**
- * @covers \Jasny\Annotations\Tag\NumberTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\NumberTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class NumberTagTest extends TestCase
 {
@@ -68,10 +68,10 @@ class NumberTagTest extends TestCase
     public function constructExceptionProvider()
     {
         return [
-            ['string', 0, 1, AnnotationException::class, 'NumberTag should be of type int or float, string given'],
+            ['string', 0, 1, PhpdocException::class, 'NumberTag should be of type int or float, string given'],
             ['int', '0', 1, TypeError::class, 'Expected int or float, string given'],
             ['int', 0, [], TypeError::class, 'Expected int or float, array given'],
-            ['float', 3, 1, AnnotationException::class, 'Min value (given 3) should be less than max (given 1)'],
+            ['float', 3, 1, PhpdocException::class, 'Min value (given 3) should be less than max (given 1)'],
         ];
     }
 
@@ -140,7 +140,7 @@ class NumberTagTest extends TestCase
      */
     public function testProcessException($type, $min, $max, $value, $exceptionMessage)
     {
-        $this->expectException(AnnotationException::class);
+        $this->expectException(PhpdocException::class);
         $this->expectExceptionMessage($exceptionMessage);
 
         $tag = new NumberTag('foo', $type, $min, $max);

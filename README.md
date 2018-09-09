@@ -123,7 +123,7 @@ So if you only need to parse those tags, you can simple do:
 //$doc = ...; Get doc-comment string from reflection
 
 $tags = PhpDocumentor::tags();
-$parser = new AnnotationParser($tags);
+$parser = new PhpdocParser($tags);
 $annotations = $parser->parse($doc);
 ```
 

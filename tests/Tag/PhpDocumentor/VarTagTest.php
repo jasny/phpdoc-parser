@@ -1,13 +1,13 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag\PhpDocumentor;
+namespace Jasny\PhpdocParser\Tests\Tag\PhpDocumentor;
 
-use Jasny\Annotations\Tag\PhpDocumentor\VarTag;
+use Jasny\PhpdocParser\Tag\PhpDocumentor\VarTag;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\Tag\PhpDocumentor\VarTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\PhpDocumentor\VarTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class VarTagTest extends TestCase
 {
