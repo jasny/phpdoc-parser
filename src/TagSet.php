@@ -48,7 +48,7 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      * @param iterable $tags
      * @return static
      */
-    public function add(iterable $tags): self
+    public function with(iterable $tags): self
     {
         $tagArray = $tags instanceof \Traversable ? iterator_to_array($tags, false) : $tags;
 
@@ -104,7 +104,7 @@ class TagSet implements \IteratorAggregate, \ArrayAccess
      */
     public function offsetSet($key, $tag): void
     {
-        throw new \BadMethodCallException("A tagset is immutable; Use `add()` instead.");
+        throw new \BadMethodCallException("A tagset is immutable; Use `with()` instead.");
     }
 
     /**
