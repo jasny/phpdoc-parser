@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
 /**
  * Custom logic for a tag.
@@ -28,14 +28,14 @@ class CustomTag extends AbstractTag
     }
 
     /**
-     * Process an annotation.
+     * Process a notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
-        return call_user_func($this->process, $annotations, $value);
+        return call_user_func($this->process, $notations, $value);
     }
 }

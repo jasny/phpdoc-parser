@@ -21,8 +21,8 @@ All these three tags are already included in `PhpDocumentor::tags()`, but still 
 $doc = (new ReflectionClass('Foo'))->getDocComment();
 $customTags = [new VarTag('property', $fqsenConvertor, ['some-more' => 'data'])];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 Result:
@@ -37,4 +37,4 @@ Result:
 ]
 ```
 
-`$fqsenConvertor` was used to expand property type to namespaced name. Also, as you see, additional custom data can be added to result annotations.
+`$fqsenConvertor` was used to expand property type to namespaced name. Also, as you see, additional custom data can be added to result notations.

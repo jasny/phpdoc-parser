@@ -1,13 +1,13 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
-use Jasny\Annotations\Tag\DescriptionTag;
+use Jasny\PhpdocParser\Tag\DescriptionTag;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\Tag\DescriptionTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\DescriptionTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class DescriptionTagTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations;
+namespace Jasny\PhpdocParser;
 
-use Jasny\Annotations\TagInterface;
-use Jasny\Annotations\TagSet;
+use Jasny\PhpdocParser\TagInterface;
+use Jasny\PhpdocParser\TagSet;
 
 /**
- * Class AnnotationParser
+ * Class PhpdocParser
  */
-class AnnotationParser
+class PhpdocParser
 {
     /**
      * @var TagSet|TagInterface[]
@@ -18,7 +18,7 @@ class AnnotationParser
     protected $tags;
 
     /**
-     * AnnotationParser constructor.
+     * PhpdocParser constructor.
      *
      * @param TagSet|TagInterface[] $tags
      */
@@ -28,34 +28,34 @@ class AnnotationParser
     }
 
     /**
-     * Parse a PHP doc comment and annotations
+     * Parse a PHP doc comment
      *
      * @param string $doc
      * @return array
      */
     public function parse(string $doc): array
     {
-        $annotations = [];
-        $rawAnnotations = $this->extractAnnotations($doc);
+        $notation = [];
+        $rawNotations = $this->extractNotations($doc);
 
-        foreach ($rawAnnotations as $item) {
+        foreach ($rawNotations as $item) {
             if (!isset($this->tags[$item['tag']])) {
                 continue;
             }
 
-            $annotations = $this->tags[$item['tag']]->process($annotations, $item['value'] ?? '');
+            $notation = $this->tags[$item['tag']]->process($notation, $item['value'] ?? '');
         }
 
-        return $annotations;
+        return $notation;
     }
 
     /**
-     * Extract annotations from doc comment
+     * Extract notation from doc comment
      *
      * @param string $doc
      * @return array
      */
-    protected function extractAnnotations(string $doc): array
+    protected function extractNotations(string $doc): array
     {
         $matches = null;
         $regex = '/^\s*(?:(?:\/\*)?\*\s*)?@(?<tag>\S+)(?:\h+(?<value>\S.*?)|\h*)(?:\*\*\/)?\r?$/m';

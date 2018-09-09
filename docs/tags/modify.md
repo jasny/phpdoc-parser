@@ -1,7 +1,7 @@
 ModifyTag
 ===
 
-This class should be used as a wrapper around other tags classes, to modify obtained annotations or to add additional data.
+This class should be used as a wrapper around other tags classes, to modify obtained notations or to add additional data.
 
 ```php
 class Foo
@@ -18,23 +18,23 @@ class Foo
 ```
 
 ```php
-$postProcess = function(array $annotations, array $tagAnnotations, string $value) {
-    //Here $tagAnnotations is ['return' => 'Bar'], and $annotations
+$postProcess = function(array $notations, array $tagAnnotations, string $value) {
+    //Here $tagAnnotations is ['return' => 'Bar'], and $notations
     //contain data of other tags, in this case it is
     //['todo' => 'Make sure method does not return Foo instead of Bar']
 
-    $annotations = array_merge($annotations, $tagAnnotations);
-    $annotations['class_exists'] = class_exists($annotations['return']); //Add some data
+    $notations = array_merge($notations, $tagAnnotations);
+    $notations['class_exists'] = class_exists($notations['return']); //Add some data
 
-    return $annotations;
+    return $notations;
 };
 
 $doc = (new ReflectionClass('Foo'))->getDocComment();
 $returnTag = new WordTag('return');
 $customTags = [new ModifyTag($returnTag, $postProcess)];
 
-$annotations = getAnnotations($doc, $customTags);
-var_export($annotations);
+$notations = getNotations($doc, $customTags);
+var_export($notations);
 ```
 
 Result is smth like:

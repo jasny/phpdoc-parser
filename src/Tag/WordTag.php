@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
 use function Jasny\expect_type;
 use function Jasny\str_before;
@@ -45,17 +45,17 @@ class WordTag extends AbstractTag
 
 
     /**
-     * Process an annotation.
+     * Process a notation.
      *
-     * @param array  $annotations
+     * @param array  $notations
      * @param string $value
      * @return array
      */
-    public function process(array $annotations, string $value): array
+    public function process(array $notations, string $value): array
     {
         if ($value === '') {
-            $annotations[$this->name] = $this->default;
-            return $annotations;
+            $notations[$this->name] = $this->default;
+            return $notations;
         }
 
         $matches = [];
@@ -63,8 +63,8 @@ class WordTag extends AbstractTag
             preg_match('/^(?|"((?:[^"]+|\\\\.)*)"|\'((?:[^\']+|\\\\.)*)\')/', $value, $matches);
 
         $word = $quoted ? $matches[1] : str_before($value, ' ');
-        $annotations[$this->name] = $word;
+        $notations[$this->name] = $word;
 
-        return $annotations;
+        return $notations;
     }
 }

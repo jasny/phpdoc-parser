@@ -1,13 +1,13 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
 use PHPUnit\Framework\TestCase;
-use Jasny\Annotations\Tag\RegExpTag;
+use Jasny\PhpdocParser\Tag\RegExpTag;
 
 /**
- * @covers \Jasny\Annotations\Tag\RegExpTag
- * @covers \Jasny\Annotations\Tag\AbstractTag
+ * @covers \Jasny\PhpdocParser\Tag\RegExpTag
+ * @covers \Jasny\PhpdocParser\Tag\AbstractTag
  */
 class RegExpTagTest extends TestCase
 {
@@ -54,7 +54,7 @@ class RegExpTagTest extends TestCase
     /**
      * Test 'process' method, if exception should be thrown
      *
-     * @expectedException Jasny\Annotations\AnnotationException
+     * @expectedException Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Failed to parse '@foo not-abc': invalid syntax
      */
     public function testProcessException()

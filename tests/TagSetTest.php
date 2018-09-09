@@ -1,14 +1,14 @@
 <?php
 
-namespace Jasny\Annotations\Tests;
+namespace Jasny\PhpdocParser\Tests;
 
-use Jasny\Annotations\TagInterface;
-use Jasny\Annotations\TagSet;
+use Jasny\PhpdocParser\TagInterface;
+use Jasny\PhpdocParser\TagSet;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\TagSet
+ * @covers \Jasny\PhpdocParser\TagSet
  */
 class TagSetTest extends TestCase
 {

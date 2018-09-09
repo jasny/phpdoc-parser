@@ -1,15 +1,15 @@
 <?php
 
-namespace Jasny\Annotations\Tests\Tag;
+namespace Jasny\PhpdocParser\Tests\Tag;
 
-use Jasny\Annotations\Tag\MultiTag;
-use Jasny\Annotations\TagInterface;
+use Jasny\PhpdocParser\Tag\MultiTag;
+use Jasny\PhpdocParser\TagInterface;
 use Jasny\TestHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Jasny\Annotations\Tag\MultiTag
+ * @covers \Jasny\PhpdocParser\Tag\MultiTag
  */
 class MultiTagTest extends TestCase
 {
@@ -61,7 +61,7 @@ class MultiTagTest extends TestCase
 
     /**
      * @expectedException \LogicException
-     * @expectedExceptionMessage Unable to parse '@foo' tag: Multi tags must result in exactly one annotation per tag.
+     * @expectedExceptionMessage Unable to parse '@foo' tag: Multi tags must result in exactly one notation per tag.
      */
     public function testProcessLogicException()
     {
@@ -93,7 +93,7 @@ class MultiTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Unable to add '@foo goodbye' tag: No name
      */
     public function testProcessKeyUnkonwn()
@@ -109,7 +109,7 @@ class MultiTagTest extends TestCase
     }
 
     /**
-     * @expectedException \Jasny\Annotations\AnnotationException
+     * @expectedException \Jasny\PhpdocParser\PhpdocException
      * @expectedExceptionMessage Unable to add '@foo goodbye' tag: Duplicate name 'one'
      */
     public function testProcessKeyDuplicate()

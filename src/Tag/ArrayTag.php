@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jasny\Annotations\Tag;
+namespace Jasny\PhpdocParser\Tag;
 
 /**
  * Tag value represents an array
