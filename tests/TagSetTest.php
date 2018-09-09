@@ -50,7 +50,7 @@ class TagSetTest extends TestCase
         $this->assertSame(['foo', 'bar', 'qux'], $keys);
     }
 
-    public function testAddTagSet()
+    public function testWithTagSet()
     {
         $newTags = [
             'red' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'red']),
@@ -59,7 +59,7 @@ class TagSetTest extends TestCase
         ];
         $new = new TagSet(array_values($newTags));
 
-        $combined = $this->tagset->add($new);
+        $combined = $this->tagset->with($new);
 
         $this->assertInstanceOf(TagSet::class, $combined);
         $this->assertEquals(['foo', 'bar', 'qux', 'red', 'blue', 'green'], array_keys(iterator_to_array($combined)));
@@ -72,7 +72,7 @@ class TagSetTest extends TestCase
         $this->assertEquals(['red', 'blue', 'green'], array_keys(iterator_to_array($new)));
     }
 
-    public function testAddArray()
+    public function testWithArray()
     {
         $newTags = [
             'red' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'red']),
@@ -81,7 +81,7 @@ class TagSetTest extends TestCase
         ];
         $new = array_values($newTags);
 
-        $combined = $this->tagset->add($new);
+        $combined = $this->tagset->with($new);
 
         $this->assertInstanceOf(TagSet::class, $combined);
         $this->assertEquals(['foo', 'bar', 'qux', 'red', 'blue', 'green'], array_keys(iterator_to_array($combined)));
