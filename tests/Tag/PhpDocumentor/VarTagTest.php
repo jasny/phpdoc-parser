@@ -32,13 +32,26 @@ class VarTagTest extends TestCase
     {
         return [
             [
+                'int Some description here',
+                null,
+                [],
+                [
+                    'some' => 'value',
+                    'foo' => [
+                        'type' => 'int',
+                        'description' => 'Some description here'
+                    ]
+                ]
+            ],
+            [
                 '$amount Some description here',
                 null,
                 [],
                 [
                     'some' => 'value',
                     'foo' => [
-                        'name' => 'amount'
+                        'name' => 'amount',
+                        'description' => 'Some description here'
                     ]
                 ]
             ],
@@ -82,6 +95,7 @@ class VarTagTest extends TestCase
                         'type' => 'some_namespace\\Foo',
                         'name' => 'amount',
                         'id' => 'some id',
+                        'description' => 'Some description here',
                         'any' => 'adds',
                         'little' => 'rats'
                     ]

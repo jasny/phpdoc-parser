@@ -58,21 +58,33 @@ class VarTag extends AbstractTag
      */
     public function process(array $notations, string $value): array
     {
-        $regexp = '/^(?:(?<type>[^$\s]+)\s*)?(?:\$(?<name>\w+)\s*)?(?:"(?<id>[^"]+)")?/';
+        $regexp = '/^(?:(?<type>[^$\s]+)\s*)?(?:\$(?<name>\w+)\s*)?(?:"(?<id>[^"]+)"\s*)?(?:(?<description>.+))?/';
         preg_match($regexp, $value, $props); //regexp won't fail
 
-        if (isset($props['type']) && $props['type'] === '') {
-            unset($props['type']);
-        }
+        $this->removeEmptyValues($props);
 
         if (isset($props['type']) && isset($this->fqsenConvertor)) {
             $props['type'] = call_user_func($this->fqsenConvertor, $props['type']);
         }
 
-        $props = array_only($props, ['type', 'name', 'id']);
+        $props = array_only($props, ['type', 'name', 'id', 'description']);
 
         $notations[$this->name] = $props + $this->additional;
 
         return $notations;
+    }
+
+    /**
+     * Remove empty values from parsed data
+     *
+     * @param array $props
+     */
+    protected function removeEmptyValues(array &$props): void
+    {
+        foreach (['type', 'name', 'id'] as $name) {
+            if (isset($props[$name]) && $props[$name] === '') {
+                unset($props[$name]);
+            }
+        }
     }
 }
