@@ -132,6 +132,7 @@ Tags classes
 
 Here's a list of available tags classes, that should cover most of the use cases:
 
+* [Summery](docs/tags/summery.md)
 * [ArrayTag](docs/tags/array.md)
 * [CustomTag](docs/tags/custom.md)
 * [DescriptionTag](docs/tags/description.md)
