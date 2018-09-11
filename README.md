@@ -117,7 +117,7 @@ The following tags are already included in `PhpDocumentor::tags()`:
 * `@used-by`
 * `@var`
 
-So if you only need to parse those tags, you can simple do:
+So if you only need to parse those tags, you can simply do:
 
 ```php
 //$doc = ...; Get doc-comment string from reflection
@@ -132,6 +132,7 @@ Tags classes
 
 Here's a list of available tags classes, that should cover most of the use cases:
 
+* [Summery](docs/tags/summery.md)
 * [ArrayTag](docs/tags/array.md)
 * [CustomTag](docs/tags/custom.md)
 * [DescriptionTag](docs/tags/description.md)

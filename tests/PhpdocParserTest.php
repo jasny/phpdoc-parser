@@ -5,6 +5,7 @@ namespace Jasny\PhpdocParser\Tests;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\TagInterface;
 use Jasny\PhpdocParser\TagSet;
+use Jasny\TestHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -13,6 +14,8 @@ use PHPUnit\Framework\TestCase;
  */
 class PhpdocParserTest extends TestCase
 {
+    use TestHelper;
+
     /**
      * @var TagInterface[]|MockObject[]
      */
@@ -140,5 +143,70 @@ DOC;
         $result = $this->parser->parse($doc);
 
         $this->assertEquals(['foo' => ['hi', 'bye'], 'bar' => true], $result);
+    }
+
+    /**
+     * Test using summery tag
+     */
+    public function testSummery()
+    {
+        $doc = <<<DOC
+/**
+ * Some summery
+ *
+ * General description
+ * spanning a few lines
+ * of doc-comment.
+ *
+ * @bar
+ * @foo bye
+ * @ign
+ */
+DOC;
+
+        $expected = ['summery' => 'Some summery', 'description' => "Some summery\nGeneral description\nspanning a few lines\nof doc-comment."];
+
+        $tags = [
+            'summery' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'summery']),
+        ];
+
+        $tagset = $this->createMock(TagSet::class);
+        $tagset->expects($this->any())->method('offsetExists')->willReturnCallback(function($key) use ($tags) {
+            return isset($tags[$key]);
+        });
+
+        $tagset->expects($this->any())->method('offsetGet')->willReturnCallback(function($key) use ($tags) {
+            return $tags[$key];
+        });
+
+        $tags['summery']->expects($this->once())->method('process')->with([], $doc)->willReturn($expected);
+
+        $parser = new PhpdocParser($tagset);
+        $result = $parser->parse($doc);
+
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Test using callback after parsing
+     */
+    public function testCallback()
+    {
+        $doc = <<<DOC
+/**
+ * @bar Some value
+ */
+DOC;
+
+        $expected = ['value after callback'];
+
+        $this->tags['bar']->expects($this->once())->method('process')
+            ->with([], 'Some value')->willReturn(['bar' => 'Some value']);
+
+        $callback = $this->createCallbackMock($this->once(), [['bar' => 'Some value']], $expected);
+
+        $result = $this->parser->parse($doc, $callback);
+
+        $this->assertSame($expected, $result);
     }
 }

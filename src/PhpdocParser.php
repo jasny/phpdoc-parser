@@ -31,11 +31,12 @@ class PhpdocParser
      * Parse a PHP doc comment
      *
      * @param string $doc
+     * @param callable $callback
      * @return array
      */
-    public function parse(string $doc): array
+    public function parse(string $doc, ?callable $callback = null): array
     {
-        $notation = [];
+        $notations = [];
         $rawNotations = $this->extractNotations($doc);
 
         foreach ($rawNotations as $item) {
@@ -43,14 +44,22 @@ class PhpdocParser
                 continue;
             }
 
-            $notation = $this->tags[$item['tag']]->process($notation, $item['value'] ?? '');
+            $notations = $this->tags[$item['tag']]->process($notations, $item['value'] ?? '');
         }
 
-        return $notation;
+        if (isset($this->tags['summery'])) {
+            $notations = $this->tags['summery']->process($notations, $doc);
+        }
+
+        if ($callback) {
+            $notations = call_user_func($callback, $notations);
+        }
+
+        return $notations;
     }
 
     /**
-     * Extract notation from doc comment
+     * Extract notations from doc comment
      *
      * @param string $doc
      * @return array
