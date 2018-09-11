@@ -31,9 +31,10 @@ class PhpdocParser
      * Parse a PHP doc comment
      *
      * @param string $doc
+     * @param callable $callback
      * @return array
      */
-    public function parse(string $doc): array
+    public function parse(string $doc, ?callable $callback = null): array
     {
         $notations = [];
         $rawNotations = $this->extractNotations($doc);
@@ -48,6 +49,10 @@ class PhpdocParser
 
         if (isset($this->tags['summery'])) {
             $notations = $this->tags['summery']->process($notations, $doc);
+        }
+
+        if ($callback) {
+            $notations = call_user_func($callback, $notations);
         }
 
         return $notations;

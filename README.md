@@ -117,7 +117,7 @@ The following tags are already included in `PhpDocumentor::tags()`:
 * `@used-by`
 * `@var`
 
-So if you only need to parse those tags, you can simple do:
+So if you only need to parse those tags, you can simply do:
 
 ```php
 //$doc = ...; Get doc-comment string from reflection

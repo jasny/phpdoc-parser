@@ -5,6 +5,7 @@ namespace Jasny\PhpdocParser\Tests;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\TagInterface;
 use Jasny\PhpdocParser\TagSet;
+use Jasny\TestHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -13,6 +14,8 @@ use PHPUnit\Framework\TestCase;
  */
 class PhpdocParserTest extends TestCase
 {
+    use TestHelper;
+
     /**
      * @var TagInterface[]|MockObject[]
      */
@@ -180,6 +183,29 @@ DOC;
 
         $parser = new PhpdocParser($tagset);
         $result = $parser->parse($doc);
+
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Test using callback after parsing
+     */
+    public function testCallback()
+    {
+        $doc = <<<DOC
+/**
+ * @bar Some value
+ */
+DOC;
+
+        $expected = ['value after callback'];
+
+        $this->tags['bar']->expects($this->once())->method('process')
+            ->with([], 'Some value')->willReturn(['bar' => 'Some value']);
+
+        $callback = $this->createCallbackMock($this->once(), [['bar' => 'Some value']], $expected);
+
+        $result = $this->parser->parse($doc, $callback);
 
         $this->assertSame($expected, $result);
     }
