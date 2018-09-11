@@ -35,7 +35,7 @@ class PhpdocParser
      */
     public function parse(string $doc): array
     {
-        $notation = [];
+        $notations = [];
         $rawNotations = $this->extractNotations($doc);
 
         foreach ($rawNotations as $item) {
@@ -43,14 +43,18 @@ class PhpdocParser
                 continue;
             }
 
-            $notation = $this->tags[$item['tag']]->process($notation, $item['value'] ?? '');
+            $notations = $this->tags[$item['tag']]->process($notations, $item['value'] ?? '');
         }
 
-        return $notation;
+        if (isset($this->tags['summery'])) {
+            $notations = $this->tags['summery']->process($notations, $doc);
+        }
+
+        return $notations;
     }
 
     /**
-     * Extract notation from doc comment
+     * Extract notations from doc comment
      *
      * @param string $doc
      * @return array
