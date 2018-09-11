@@ -158,3 +158,19 @@ function getNotations(string $doc, array $tags = []) {
     return $notations;
 }
 ```
+
+FQSEN Convertor
+---
+
+FQSEN stands for `Fully Qualified Structural Element Name`. FQSEN convertor is used to expand class name, function name to fully unique name (so with full namespace). For example, `Foo` can be converted to `Zoo\\Foo\\Bar`.
+
+Such convertors are used in this lib. Some tags, that deal with variable types, or classes names, support adding them as a constructor parameter.
+
+For example, `TypeTag`, that can be used for parsing `@return` tag, has the following constructor: `TypeTag($name, $fqsenConvertor = null)`. If provided, convertor expands the type, given as type of returned value in doc-comment. If ommited, the type will stay as it is in doc-comment.
+
+Convertor can be provided in one of two ways:
+
+* `$tags = PhpDocumentor::tags($fqsenConvertor)` - for all the tags, predefined in `PhpDocumentor::tags()`
+* `$tags = $tags->add(new TypeTag('footag', $fqsenConvertor))` - for all the tags, that are explicitly added to predefined, it should be passed as a constructor parameter (if it is supported by constructor).
+
+Convertor should be a callable, that accepts a class name, and returns expanded name.

@@ -46,12 +46,4 @@ Result:
 ]
 ```
 
-Method's return type and params types can be extended to full namespaced name, so called FQSEN (Fully Qualified Structural Element Name), if fqsen-converter is provided:
-
-```php
-$customTags = [new MethodTag('method', $fqsenConvertor)];
-```
-
-Here `$fqsenConvertor` is a callable, that handles converting class name to unique namespaced name.
-
 It's better not to use `MethodTag` instance on its own, but instead wrap it in a `MultiTag` instance (see [MultiTag](multi.md)).
