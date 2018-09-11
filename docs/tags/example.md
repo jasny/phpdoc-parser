@@ -27,7 +27,8 @@ That results in
     'example' => [
         'location' => 'some_dir/some_file.php',
         'start_line' => 12,
-        'number_of_lines' => 24
+        'number_of_lines' => 24,
+        'description' => 'Misterious foo function in action'
     ]
 ]
 ```
