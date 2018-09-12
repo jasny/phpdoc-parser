@@ -38,6 +38,7 @@ class PhpdocParser
     {
         $notations = [];
         $rawNotations = $this->extractNotations($doc);
+        $rawNotations = $this->joinMultilineNotations($rawNotations);
 
         foreach ($rawNotations as $item) {
             if (!isset($this->tags[$item['tag']])) {
@@ -58,8 +59,9 @@ class PhpdocParser
         return $notations;
     }
 
+
     /**
-     * Extract notations from doc comment
+     * Extract notation from doc comment
      *
      * @param string $doc
      * @return array
@@ -67,8 +69,52 @@ class PhpdocParser
     protected function extractNotations(string $doc): array
     {
         $matches = null;
-        $regex = '/^\s*(?:(?:\/\*)?\*\s*)?@(?<tag>\S+)(?:\h+(?<value>\S.*?)|\h*)(?:\*\*\/)?\r?$/m';
+
+        $tag = '\s*@(?<tag>\S+)(?:\h+(?<value>\S.*?)|\h*)';
+        $tagContinue = '(?:\040){2}(?<multiline_value>\S.*?)';
+        $regex = '/^\s*(?:(?:\/\*)?\*)?(?:' . $tag . '|' . $tagContinue . ')(?:\*\*\/)?\r?$/m';
 
         return preg_match_all($regex, $doc, $matches, PREG_SET_ORDER) ? $matches : [];
+    }
+
+    /**
+     * Join multiline notations
+     *
+     * @param array $rawNotations
+     * @return array
+     */
+    protected function joinMultilineNotations(array $rawNotations): array
+    {
+        $result = [];
+        $tagsNotations = $this->filterTagsNotations($rawNotations);
+
+        foreach ($tagsNotations as $item) {
+            if (!empty($item['tag'])) {
+                $result[] = $item;
+            } else {
+                $lastIdx = count($result) - 1;
+                $result[$lastIdx]['value'] = trim($result[$lastIdx]['value'])
+                    . ' ' . trim($item['multiline_value']);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Remove everything that goes before tags
+     *
+     * @param array $rawNotations
+     * @return array
+     */
+    protected function filterTagsNotations(array $rawNotations): array
+    {
+        for ($i = 0; $i < count($rawNotations); $i++) {
+            if (!empty($rawNotations[$i]['tag'])) {
+                return array_slice($rawNotations, $i);
+            }
+        }
+
+        return [];
     }
 }

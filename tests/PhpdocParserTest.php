@@ -209,4 +209,66 @@ DOC;
 
         $this->assertSame($expected, $result);
     }
+
+    /**
+     * Test processing multiline tags
+     */
+    public function testMultiline()
+    {
+        $doc = <<<DOC
+/**
+ * Summery should be ignored.
+ *
+ * General description
+ *  spanning a few lines
+ *  of doc-comment. Should be ignored.
+ *
+ * @bar Some
+ *  bar value.
+ * @foo This one
+ *  also has multiline
+ *  value.
+ * @qux Single line value
+ */
+DOC;
+        $expected = [
+            'bar' => 'Some bar value.',
+            'foo' => 'This one also has multiline value.',
+            'qux' => 'Single line value'
+        ];
+
+        $this->tags['bar']->expects($this->once())->method('process')->with([], 'Some bar value.')->willReturn(['bar' => 'Some bar value.']);
+        $this->tags['foo']->expects($this->once())->method('process')->with(['bar' => 'Some bar value.'], 'This one also has multiline value.')->willReturn([
+            'bar' => 'Some bar value.',
+            'foo' => 'This one also has multiline value.'
+        ]);
+        $this->tags['qux']->expects($this->once())->method('process')->with([
+            'bar' => 'Some bar value.',
+            'foo' => 'This one also has multiline value.'
+        ], 'Single line value')->willReturn($expected);
+
+        $result = $this->parser->parse($doc);
+
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Test parsing comment with no tags
+     */
+    public function test()
+    {
+        $doc = <<<DOC
+/**
+ * Just some description. Should be ignored.
+ */
+DOC;
+
+        $this->tags['bar']->expects($this->never())->method('process');
+        $this->tags['foo']->expects($this->never())->method('process');
+        $this->tags['qux']->expects($this->never())->method('process');
+
+        $result = $this->parser->parse($doc);
+
+        $this->assertSame([], $result);
+    }
 }
