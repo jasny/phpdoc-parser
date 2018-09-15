@@ -41,7 +41,8 @@ Result:
                 'name' => 'third',
                 'default' => '[]'
             ]
-        ]
+        ],
+        'description' => 'Method to obtain some extra bar'
     ]
 ]
 ```

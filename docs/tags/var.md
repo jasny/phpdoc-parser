@@ -5,7 +5,7 @@ Is used for processing `@var`, `@property` and `@param` tags.
 
 ```php
 /**
- * @property Bar $value
+ * @property Bar $value  Some Bar thing to use
  */
 class Foo
 {
@@ -32,7 +32,8 @@ Result:
     'property' => [
         'type' => 'Zoo\Baz\Bar',
         'name' => 'value',
-        'some-more' => 'data'
+        'some-more' => 'data',
+        'description' => 'Some Bar thing to use'
     ]
 ]
 ```

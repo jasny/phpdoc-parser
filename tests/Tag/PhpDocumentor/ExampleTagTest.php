@@ -61,13 +61,25 @@ class ExampleTagTest extends TestCase
                 ]
             ],
             [
+                '"some dir/and file.php" 47 And following description',
+                [
+                    'some' => 'value',
+                    'foo' => [
+                        'location' => 'some dir/and file.php',
+                        'start_line' => 47,
+                        'description' => 'And following description'
+                    ]
+                ]
+            ],
+            [
                 '"some dir/and file.php" 47 39 And following description',
                 [
                     'some' => 'value',
                     'foo' => [
                         'location' => 'some dir/and file.php',
                         'start_line' => 47,
-                        'number_of_lines' => 39
+                        'number_of_lines' => 39,
+                        'description' => 'And following description'
                     ]
                 ]
             ],
@@ -76,7 +88,8 @@ class ExampleTagTest extends TestCase
                 [
                     'some' => 'value',
                     'foo' => [
-                        'location' => 'some dir/and file.php'
+                        'location' => 'some dir/and file.php',
+                        'description' => 'And following description'
                     ]
                 ]
             ],
