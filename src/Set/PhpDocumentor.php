@@ -9,6 +9,7 @@ use Jasny\PhpdocParser\Tag\MultiTag;
 use Jasny\PhpdocParser\Tag\PhpDocumentor\ExampleTag;
 use Jasny\PhpdocParser\Tag\PhpDocumentor\MethodTag;
 use Jasny\PhpdocParser\Tag\PhpDocumentor\VarTag;
+use Jasny\PhpdocParser\Tag\PhpDocumentor\TypeTag;
 use Jasny\PhpdocParser\TagInterface;
 use Jasny\PhpdocParser\TagSet;
 use Jasny\PhpdocParser\Tag\ModifyTag;
@@ -62,13 +63,13 @@ class PhpDocumentor implements PredefinedSetInterface
                 new VarTag('property-write', $fqsenConvertor, ['write_only' => true]),
                 'name'
             ),
-            self::fqsen(new WordTag('return'), $fqsenConvertor),
+            new TypeTag('return', $fqsenConvertor),
             self::fqsen(new WordTag('see'), $fqsenConvertor),
             new WordTag('since'),
-            new MultiTag('throws', self::fqsen(new WordTag('throws'), $fqsenConvertor)),
+            new MultiTag('throws', new TypeTag('throws', $fqsenConvertor)),
             new DescriptionTag('todo'),
-            self::fqsen(new WordTag('uses'), $fqsenConvertor),
-            self::fqsen(new WordTag('used-by'), $fqsenConvertor),
+            new TypeTag('uses', $fqsenConvertor),
+            new TypeTag('used-by', $fqsenConvertor),
             new VarTag('var', $fqsenConvertor)
         ]);
     }
