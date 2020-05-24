@@ -93,8 +93,10 @@ class PhpdocParser
                 $result[] = $item;
             } else {
                 $lastIdx = count($result) - 1;
-                $result[$lastIdx]['value'] = trim($result[$lastIdx]['value'])
-                    . ' ' . trim($item['multiline_value']);
+                if (isset($result[$lastIdx]['value'])) {
+                    $result[$lastIdx]['value'] = trim($result[$lastIdx]['value'])
+                        . ' ' . trim($item['multiline_value']);
+                }
             }
         }
 
