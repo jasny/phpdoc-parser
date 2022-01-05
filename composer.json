@@ -19,7 +19,8 @@
         "jasny/php-functions": "^3.3"
     },
     "require-dev": {
-        "jasny/php-code-quality": "~2.7.0"
+        "jasny/php-code-quality": "~2.7.0",
+        "phpunit/phpunit": ">= 9.0.0"
     },
     "autoload": {
         "psr-4": {
