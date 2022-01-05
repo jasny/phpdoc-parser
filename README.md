@@ -134,20 +134,20 @@ Tags classes
 
 Here's a list of available tags classes, that should cover most of the use cases:
 
-* [Summery](docs/tags/summery.md)
-* [ArrayTag](docs/tags/array.md)
-* [CustomTag](docs/tags/custom.md)
-* [DescriptionTag](docs/tags/description.md)
-* [ExampleTag](docs/tags/example.md)
-* [FlagTag](docs/tags/flag.md)
-* [MapTag](docs/tags/map.md)
-* [MethodTag](docs/tags/method.md)
-* [ModifyTag](docs/tags/modify.md)
-* [MultiTag](docs/tags/multi.md)
-* [NumberTag](docs/tags/number.md)
-* [RegExpTag](docs/tags/regexp.md)
-* [VarTag](docs/tags/var.md)
-* [WordTag](docs/tags/word.md)
+* [Summery](https://www.jasny.net/phpdoc-parser/tags/summery.md)
+* [ArrayTag](https://www.jasny.net/phpdoc-parser/tags/array.md)
+* [CustomTag](https://www.jasny.net/phpdoc-parser/tags/custom.md)
+* [DescriptionTag](https://www.jasny.net/phpdoc-parser/tags/description.md)
+* [ExampleTag](https://www.jasny.net/phpdoc-parser/tags/example.md)
+* [FlagTag](https://www.jasny.net/phpdoc-parser/tags/flag.md)
+* [MapTag](https://www.jasny.net/phpdoc-parser/tags/map.md)
+* [MethodTag](https://www.jasny.net/phpdoc-parser/tags/method.md)
+* [ModifyTag](https://www.jasny.net/phpdoc-parser/tags/modify.md)
+* [MultiTag](https://www.jasny.net/phpdoc-parser/tags/multi.md)
+* [NumberTag](https://www.jasny.net/phpdoc-parser/tags/number.md)
+* [RegExpTag](https://www.jasny.net/phpdoc-parser/tags/regexp.md)
+* [VarTag](https://www.jasny.net/phpdoc-parser/tags/var.md)
+* [WordTag](https://www.jasny.net/phpdoc-parser/tags/word.md)
 
 The following function is used in tags documentation, for short reference to parsing:
 
@@ -188,7 +188,7 @@ This example uses [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/
 $reflection = new ReflectionClass('\My\Example\Classy');
 
 $contextFactory = new \phpDocumentor\Reflection\Types\ContextFactory();
-$context = $contextFactory->createFromReflector();
+$context = $contextFactory->createFromReflector($reflection);
 
 $resolver = new \phpDocumentor\Reflection\FqsenResolver();
 $fn = fn(string $class): string => $resolver->resolve($class, $context);

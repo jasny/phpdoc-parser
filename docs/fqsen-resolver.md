@@ -30,7 +30,7 @@ This example uses [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/
 $reflection = new ReflectionClass('\My\Example\Classy');
 
 $contextFactory = new \phpDocumentor\Reflection\Types\ContextFactory();
-$context = $contextFactory->createFromReflector();
+$context = $contextFactory->createFromReflector($reflection);
 
 $resolver = new \phpDocumentor\Reflection\FqsenResolver();
 $fn = fn(string $class): string => $resolver->resolve($class, $context);
