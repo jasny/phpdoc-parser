@@ -72,7 +72,7 @@ class PhpdocParser
 
         $tag = '\s*@(?<tag>\S+)(?:\h+(?<value>\S.*?)|\h*)';
         $tagContinue = '(?:\040){2}(?<multiline_value>\S.*?)';
-        $regex = '/^\s*(?:(?:\/\*)?\*)?(?:' . $tag . '|' . $tagContinue . ')(?:\*\*\/)?\r?$/m';
+        $regex = '/^\s*(?:(?:\/\*)?\*)?(?:' . $tag . '|' . $tagContinue . ')(?:\s*\*\*\/)?\r?$/m';
 
         return preg_match_all($regex, $doc, $matches, PREG_SET_ORDER) ? $matches : [];
     }
@@ -93,6 +93,11 @@ class PhpdocParser
                 $result[] = $item;
             } else {
                 $lastIdx = count($result) - 1;
+
+                if (!isset($result[$lastIdx]['value'])) {
+                    $result[$lastIdx]['value'] = '';
+                }
+
                 $result[$lastIdx]['value'] = trim($result[$lastIdx]['value'])
                     . ' ' . trim($item['multiline_value']);
             }
