@@ -2,8 +2,8 @@
 
 namespace Jasny\PhpdocParser\Tests\Tag;
 
+use Jasny\PHPUnit\CallbackMockTrait;
 use Jasny\PhpdocParser\Tag\CustomTag;
-use Jasny\TestHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -13,8 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CustomTagTest extends TestCase
 {
-    use TestHelper;
-
+    use CallbackMockTrait;
 
     public function testGetName()
     {

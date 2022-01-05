@@ -22,7 +22,8 @@ class ExampleTag extends AbstractTag
      */
     public function process(array $notations, string $value): array
     {
-        $regexp = '/^(?<location>(?:[^"]\S*|"[^"]+"))(?:\s*(?<start_line>\d+)(?:\s*(?<number_of_lines>\d+))?)?(?:\s*(?<description>.+))?/';
+        $regexp = '/^(?<location>(?:[^"]\S*|"[^"]+"))(?:\s*(?<start_line>\d+)'
+          . '(?:\s*(?<number_of_lines>\d+))?)?(?:\s*(?<description>.+))?/';
 
         if (!preg_match($regexp, $value, $matches)) {
             throw new PhpdocException("Failed to parse '@{$this->name} $value': invalid syntax");
@@ -46,7 +47,9 @@ class ExampleTag extends AbstractTag
         $values['location'] = trim($values['location'], '"');
 
         foreach (['start_line', 'number_of_lines'] as $name) {
-            if (!isset($values[$name])) continue;
+            if (!isset($values[$name])) {
+                continue;
+            }
 
             if ($values[$name] === '') {
                 unset($values[$name]);

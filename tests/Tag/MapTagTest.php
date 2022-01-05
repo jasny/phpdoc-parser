@@ -2,9 +2,11 @@
 
 namespace Jasny\PhpdocParser\Tests\Tag;
 
-use Jasny\TestHelper;
+use Jasny\PHPUnit\PrivateAccessTrait;
+use Jasny\PHPUnit\CallbackMockTrait;
 use PHPUnit\Framework\TestCase;
 use Jasny\PhpdocParser\Tag\MapTag;
+use Jasny\PhpdocParser\PhpdocException;
 
 /**
  * @covers \Jasny\PhpdocParser\Tag\MapTag
@@ -13,7 +15,8 @@ use Jasny\PhpdocParser\Tag\MapTag;
  */
 class MapTagTest extends TestCase
 {
-    use TestHelper;
+    use PrivateAccessTrait;
+    use CallbackMockTrait;
 
     public function testGetName()
     {
@@ -45,14 +48,12 @@ class MapTagTest extends TestCase
         $this->assertEquals($type, $tag->getType());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid type 'ton'
-     */
     public function testGetTypeInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Invalid type 'ton'");
+        
         $tag = new MapTag('foo', 'ton');
-        $tag->getType();
     }
 
 
@@ -135,53 +136,52 @@ class MapTagTest extends TestCase
         $this->assertEquals(['foo' => ['a' => 3.14, 'b' => 7.0, 'c' => 10e4, 'd' => 1.41429, 'e' => -1.2]], $result);
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Failed to parse '@foo red = 66, green, blue = 244': no key for value 'green'
-     */
     public function testProcessInvalidNoKey()
     {
         $tag = new MapTag('foo');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Failed to parse '@foo red = 66, green, blue = 244': no key for value 'green'");
+        
         $tag->process([], 'red = 66, green, blue = 244');
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Failed to parse '@foo red = 66, =229, blue = 244': no key for value '229'
-     */
     public function testProcessInvalidBlankKey()
     {
         $tag = new MapTag('foo');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Failed to parse '@foo red = 66, =229, blue = 244': no key for value '229'");
+        
         $tag->process([], 'red = 66, =229, blue = 244');
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Failed to parse '@foo a = 10, b = 33.2, c = 20': invalid value '33.2'
-     */
     public function testProcessInvalidInt()
     {
         $tag = new MapTag('foo', 'int');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Failed to parse '@foo a = 10, b = 33.2, c = 20': invalid value '33.2'");
+        
         $tag->process([], 'a = 10, b = 33.2, c = 20');
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Failed to parse '@foo a = 10, b = 33.., c = 20': invalid value '33..'
-     */
     public function testProcessInvalidFloat()
     {
         $tag = new MapTag('foo', 'float');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Failed to parse '@foo a = 10, b = 33.., c = 20': invalid value '33..'");
+        
         $tag->process([], 'a = 10, b = 33.., c = 20');
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testProcessInvalidType()
     {
         $tag = new MapTag('foo');
         $this->setPrivateProperty($tag, 'type', 'abc');
+
+        $this->expectException(\UnexpectedValueException::class);
 
         $tag->process([], 'a = 10');
     }}

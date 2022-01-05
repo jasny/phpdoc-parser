@@ -116,4 +116,3 @@ class MethodTag extends AbstractTag
         }
     }
 }
-

@@ -54,7 +54,6 @@ class VarTag extends AbstractTag
      * @param array  $notations
      * @param string $value
      * @return array
-     * @throws notation
      */
     public function process(array $notations, string $value): array
     {

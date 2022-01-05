@@ -4,7 +4,7 @@ namespace Jasny\PhpdocParser\Tests\Tag;
 
 use Jasny\PhpdocParser\Tag\MultiTag;
 use Jasny\PhpdocParser\TagInterface;
-use Jasny\TestHelper;
+use Jasny\PhpdocParser\PhpdocException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -13,8 +13,6 @@ use PHPUnit\Framework\TestCase;
  */
 class MultiTagTest extends TestCase
 {
-    use TestHelper;
-
     public function testGetName()
     {
         /** @var MockObject|TagInterface $mockTag */
@@ -59,10 +57,6 @@ class MultiTagTest extends TestCase
         $this->assertEquals(['foos' => ['one', 'two', '3']], $result);
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Unable to parse '@foo' tag: Multi tags must result in exactly one notation per tag.
-     */
     public function testProcessLogicException()
     {
         /** @var MockObject|TagInterface $mockTag */
@@ -71,6 +65,9 @@ class MultiTagTest extends TestCase
             ->willReturn(['foo' => '3', 'bar' => '2']);
 
         $tag = new MultiTag('foos', $mockTag);
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage("Unable to parse '@foo' tag: Multi tags must result in exactly one notation per tag.");
 
         $tag->process(['foos' => ['one', 'two']], 'three');
     }
@@ -92,10 +89,6 @@ class MultiTagTest extends TestCase
         ]], $result);
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Unable to add '@foo goodbye' tag: No name
-     */
     public function testProcessKeyUnkonwn()
     {
         /** @var MockObject|TagInterface $mockTag */
@@ -104,14 +97,13 @@ class MultiTagTest extends TestCase
             ->willReturn(['foo' => ['desc' => 'bye']]);
 
         $tag = new MultiTag('foos', $mockTag, 'name');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Unable to add '@foo goodbye' tag: No name");
 
         $tag->process(['foos' => ['one' => ['name' => 'one', 'desc' => 'hi']]], 'goodbye');
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Unable to add '@foo goodbye' tag: Duplicate name 'one'
-     */
     public function testProcessKeyDuplicate()
     {
         /** @var MockObject|TagInterface $mockTag */
@@ -120,6 +112,9 @@ class MultiTagTest extends TestCase
             ->willReturn(['foo' => ['name' => 'one', 'desc' => 'bye']]);
 
         $tag = new MultiTag('foos', $mockTag, 'name');
+
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Unable to add '@foo goodbye' tag: Duplicate name 'one'");
 
         $tag->process(['foos' => ['one' => ['name' => 'one', 'desc' => 'hi']]], 'goodbye');
     }

@@ -3,6 +3,7 @@
 namespace Jasny\PhpdocParser\Tests\Tag\PhpDocumentor;
 
 use Jasny\PhpdocParser\Tag\PhpDocumentor\TypeTag;
+use Jasny\PhpdocParser\PhpdocException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -64,13 +65,14 @@ class TypeTagTest extends TestCase
 
     /**
      * Test 'process' method, if exception should be thrown
-     *
-     * @expectedException Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessageRegExp /Failed to parse '@foo': tag value should not be empty/
      */
     public function testProcessEmptyValue()
     {
         $tag = new TypeTag('foo');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessageMatches("/Failed to parse '@foo': tag value should not be empty/");
+    
         $result = $tag->process(['some' => 'value'], '');
     }
 }

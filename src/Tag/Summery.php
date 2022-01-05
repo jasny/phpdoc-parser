@@ -16,7 +16,7 @@ class Summery extends AbstractTag
      */
     public function __construct()
     {
-        $this->name = 'summery';
+        parent::__construct('summery');
     }
 
     /**
@@ -30,7 +30,7 @@ class Summery extends AbstractTag
     {
         preg_match_all('/^\s*(?:(?:\/\*)?\*\s*)?([^@\s\/*].*?)\r?$/m', $value, $matches, PREG_PATTERN_ORDER);
 
-        if (!$matches || empty($matches[1])) {
+        if (!isset($matches[1]) || $matches[1] === []) {
             return $notations;
         }
 

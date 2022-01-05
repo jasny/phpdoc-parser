@@ -68,8 +68,11 @@ abstract class AbstractArrayTag extends AbstractTag
         try {
             $array = $this->toArray($items);
         } catch (PhpdocException $exception) {
-            throw new PhpdocException("Failed to parse '@{$this->name} {$value}': " . $exception->getMessage(),
-                0, $exception);
+            throw new PhpdocException(
+                "Failed to parse '@{$this->name} {$value}': " . $exception->getMessage(),
+                0,
+                $exception
+            );
         }
 
         $notations[$this->name] = $array;

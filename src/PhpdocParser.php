@@ -52,8 +52,8 @@ class PhpdocParser
             $notations = $this->tags['summery']->process($notations, $doc);
         }
 
-        if ($callback) {
-            $notations = call_user_func($callback, $notations);
+        if ($callback !== null) {
+            $notations = $callback($notations);
         }
 
         return $notations;
@@ -89,7 +89,7 @@ class PhpdocParser
         $tagsNotations = $this->filterTagsNotations($rawNotations);
 
         foreach ($tagsNotations as $item) {
-            if (!empty($item['tag'])) {
+            if ($item['tag'] !== '') {
                 $result[] = $item;
             } else {
                 $lastIdx = count($result) - 1;
@@ -115,7 +115,7 @@ class PhpdocParser
     protected function filterTagsNotations(array $rawNotations): array
     {
         for ($i = 0; $i < count($rawNotations); $i++) {
-            if (!empty($rawNotations[$i]['tag'])) {
+            if ($rawNotations[$i]['tag'] !== '') {
                 return array_slice($rawNotations, $i);
             }
         }

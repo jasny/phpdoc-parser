@@ -3,6 +3,7 @@
 namespace Jasny\PhpdocParser\Tests\Tag\PhpDocumentor;
 
 use Jasny\PhpdocParser\Tag\PhpDocumentor\MethodTag;
+use Jasny\PhpdocParser\PhpdocException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -121,12 +122,14 @@ class MethodTagTest extends TestCase
      * Test 'process' method, if exception should be thrown
      *
      * @dataProvider processExceptionProvider
-     * @expectedException Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessageRegExp /Failed to parse '@foo .*?': invalid syntax/
      */
     public function testProcessException($value)
     {
         $tag = new MethodTag('foo');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessageMatches("/Failed to parse '@foo .*?': invalid syntax/");
+    
         $result = $tag->process(['some' => 'value'], $value);
     }
 }

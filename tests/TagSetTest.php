@@ -22,7 +22,7 @@ class TagSetTest extends TestCase
      */
     protected $tagset;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->tags = [
             'foo' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']),
@@ -38,7 +38,7 @@ class TagSetTest extends TestCase
         $keys = [];
 
         foreach ($this->tagset as $key => $tag) {
-            $this->assertInternalType('string', $key);
+            $this->assertIsString($key);
             $this->assertInstanceOf(TagInterface::class, $tag);
 
             $this->assertArrayHasKey($key, $this->tagset);
@@ -125,28 +125,25 @@ class TagSetTest extends TestCase
         $this->assertSame($this->tags['bar'], $this->tagset['bar']);
     }
 
-    /**
-     * @expectedException \OutOfBoundsException
-     * @expectedExceptionMessage Unknown tag '@non-existent'; Use isset to see if tag is defined.
-     */
     public function testOffsetGetNonExistent()
     {
+        $this->expectException(\OutOfBoundsException::class);
+        $this->expectExceptionMessage("Unknown tag '@non-existent'; Use isset to see if tag is defined");
+        
         $this->tagset['non-existent'];
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testOffsetSet()
     {
+        $this->expectException(\BadMethodCallException::class);
+        
         $this->tagset['shape'] = 'round';
     }
 
-    /**
-     * @expectedException \BadMethodCallException
-     */
     public function testOffsetUnset()
     {
+        $this->expectException(\BadMethodCallException::class);
+    
         unset($this->tagset['foo']);
     }
 }

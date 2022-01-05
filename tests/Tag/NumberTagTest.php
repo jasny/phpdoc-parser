@@ -3,6 +3,7 @@
 namespace Jasny\PhpdocParser\Tests\Tag;
 
 use PHPUnit\Framework\TestCase;
+use Jasny\PHPUnit\PrivateAccessTrait;
 use Jasny\PhpdocParser\Tag\NumberTag;
 use Jasny\PhpdocParser\PhpdocException;
 use TypeError;
@@ -13,8 +14,8 @@ use TypeError;
  */
 class NumberTagTest extends TestCase
 {
-    use \Jasny\TestHelper;
-
+    use PrivateAccessTrait;
+    
     /**
      * Provide data for testing '__construct' method
      *
@@ -55,9 +56,9 @@ class NumberTagTest extends TestCase
         $tag = new NumberTag('foo', $type, $min, $max);
 
         $this->assertSame('foo', $tag->getName());
-        $this->assertAttributeSame($type, 'type', $tag);
-        $this->assertAttributeSame($min, 'min', $tag);
-        $this->assertAttributeSame($max, 'max', $tag);
+        $this->assertSame($type, $this->getPrivateProperty($tag, 'type'));
+        $this->assertSame($min, $this->getPrivateProperty($tag, 'min'));
+        $this->assertSame($max, $this->getPrivateProperty($tag, 'max'));
     }
 
     /**

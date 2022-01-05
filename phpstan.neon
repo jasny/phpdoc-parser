@@ -2,6 +2,13 @@ parameters:
     level: 4
     paths:
         - src
+    ignoreErrors:
+        - /Unsafe usage of new static/
+        -
+            message: /should be contravariant with parameter/
+            path: src/TagSet.php
+
 includes:
   	- vendor/phpstan/phpstan-strict-rules/rules.neon
+
 

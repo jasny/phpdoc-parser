@@ -4,6 +4,7 @@ namespace Jasny\PhpdocParser\Tests\Tag;
 
 use PHPUnit\Framework\TestCase;
 use Jasny\PhpdocParser\Tag\RegExpTag;
+use Jasny\PhpdocParser\PhpdocException;
 
 /**
  * @covers \Jasny\PhpdocParser\Tag\RegExpTag
@@ -11,8 +12,6 @@ use Jasny\PhpdocParser\Tag\RegExpTag;
  */
 class RegExpTagTest extends TestCase
 {
-    use \Jasny\TestHelper;
-
     /**
      * Test 'getRegExp' method
      */
@@ -53,13 +52,14 @@ class RegExpTagTest extends TestCase
 
     /**
      * Test 'process' method, if exception should be thrown
-     *
-     * @expectedException Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Failed to parse '@foo not-abc': invalid syntax
      */
     public function testProcessException()
     {
         $tag = new RegExpTag('foo', '/^abc/');
+        
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Failed to parse '@foo not-abc': invalid syntax");
+        
         $result = $tag->process(['some' => 'value'], 'not-abc');
     }
 }

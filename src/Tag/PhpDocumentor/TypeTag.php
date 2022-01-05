@@ -61,7 +61,7 @@ class TypeTag extends AbstractTag
      */
     protected function processType(array &$data): void
     {
-        if (isset($data['type']) && $this->fqsenConvertor) {
+        if (isset($data['type']) && $this->fqsenConvertor !== null) {
             $data['type'] = call_user_func($this->fqsenConvertor, $data['type']);
         }
     }

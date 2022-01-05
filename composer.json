@@ -15,12 +15,11 @@
         "source": "https://github.com/jasny/phpdoc-parser"
     },
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.4.0",
         "jasny/php-functions": "^3.3"
     },
     "require-dev": {
-        "appzcoder/phpcloc": "^0.0.2",
-        "jasny/php-code-quality": "^2.3"
+        "jasny/php-code-quality": "~2.7.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,13 +33,9 @@
     },
     "scripts": {
         "test": [
-            "phpcloc cloc src",
-            "phpunit",
-            "phpcs -p src",
-            "phpstan analyse"
-        ],
-        "post-create-project-cmd": [
-            "bash init.sh && rm init.sh"
+            "phpstan analyse",
+            "phpunit --testdox --colors=always",
+            "phpcs -p src"
         ]
     },
     "config": {

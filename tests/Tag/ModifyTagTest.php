@@ -4,7 +4,7 @@ namespace Jasny\PhpdocParser\Tests\Tag;
 
 use Jasny\PhpdocParser\Tag\ModifyTag;
 use Jasny\PhpdocParser\TagInterface;
-use Jasny\TestHelper;
+use Jasny\PHPUnit\CallbackMockTrait;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -13,7 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ModifyTagTest extends TestCase
 {
-    use TestHelper;
+    use CallbackMockTrait;
 
     public function testGetName()
     {

@@ -2,9 +2,10 @@
 
 namespace Jasny\PhpdocParser\Tests\Tag;
 
-use Jasny\TestHelper;
+use Jasny\PHPUnit\PrivateAccessTrait;
 use PHPUnit\Framework\TestCase;
 use Jasny\PhpdocParser\Tag\ArrayTag;
+use Jasny\PhpdocParser\PhpdocException;
 
 /**
  * @covers \Jasny\PhpdocParser\Tag\ArrayTag
@@ -13,7 +14,7 @@ use Jasny\PhpdocParser\Tag\ArrayTag;
  */
 class ArrayTagTest extends TestCase
 {
-    use TestHelper;
+    use PrivateAccessTrait;
 
     public function testConstruct()
     {
@@ -45,12 +46,11 @@ class ArrayTagTest extends TestCase
         $this->assertEquals($type, $tag->getType());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid type 'ton'
-     */
     public function testGetTypeInvalid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Invalid type 'ton'");
+    
         $tag = new ArrayTag('foo', 'ton');
         $tag->getType();
     }
@@ -131,31 +131,28 @@ class ArrayTagTest extends TestCase
         $this->assertSame(['foo' => [3.14, 7.0, 10e4, 1.41429, -1.2]], $result);
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Failed to parse '@foo 10, 33.2, 20': invalid value '33.2'
-     */
     public function testProcessInvalidInt()
     {
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Failed to parse '@foo 10, 33.2, 20': invalid value '33.2'");
+    
         $tag = new ArrayTag('foo', 'int');
         $tag->process([], '10, 33.2, 20');
     }
 
-    /**
-     * @expectedException \Jasny\PhpdocParser\PhpdocException
-     * @expectedExceptionMessage Failed to parse '@foo 10, 33.., 20': invalid value '33..'
-     */
     public function testProcessInvalidFloat()
     {
+        $this->expectException(PhpdocException::class);
+        $this->expectExceptionMessage("Failed to parse '@foo 10, 33.., 20': invalid value '33..'");
+    
         $tag = new ArrayTag('foo', 'float');
         $tag->process([], '10, 33.., 20');
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testProcessInvalidType()
     {
+        $this->expectException(\UnexpectedValueException::class);
+            
         $tag = new ArrayTag('foo');
         $this->setPrivateProperty($tag, 'type', 'abc');
 

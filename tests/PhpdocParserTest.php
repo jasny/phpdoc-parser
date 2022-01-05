@@ -5,7 +5,7 @@ namespace Jasny\PhpdocParser\Tests;
 use Jasny\PhpdocParser\PhpdocParser;
 use Jasny\PhpdocParser\TagInterface;
 use Jasny\PhpdocParser\TagSet;
-use Jasny\TestHelper;
+use Jasny\PHPUnit\CallbackMockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PhpdocParserTest extends TestCase
 {
-    use TestHelper;
+    use CallbackMockTrait;
 
     /**
      * @var TagInterface[]|MockObject[]
@@ -26,7 +26,7 @@ class PhpdocParserTest extends TestCase
      */
     protected $parser;
 
-    public function setUp()
+    public function setUp(): void
     {
         $tags = [
             'foo' => $this->createConfiguredMock(TagInterface::class, ['getName' => 'foo']),

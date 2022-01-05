@@ -1,6 +1,6 @@
 <?php
 
-namespace Jasny\PhpdocParser\Tests;
+namespace Jasny\PhpdocParser\Tests\Set;
 
 use Jasny\PhpdocParser\TagSet;
 use Jasny\PhpdocParser\TagInterface;
@@ -12,8 +12,6 @@ use PHPUnit\Framework\TestCase;
  */
 class PhpDocumentorTest extends TestCase
 {
-    use \Jasny\TestHelper;
-
     /**
      * Test 'tags' method
      */
