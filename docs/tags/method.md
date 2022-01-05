@@ -1,3 +1,10 @@
+---
+layout: default
+title: MethodTag
+parent: Tags
+nav_order: 8
+---
+
 MethodTag
 ===
 

@@ -1,3 +1,10 @@
+---
+layout: default
+title: VarTag
+parent: Tags
+nav_order: 14
+---
+
 VarTag
 ===
 

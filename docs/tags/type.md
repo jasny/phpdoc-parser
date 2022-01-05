@@ -1,3 +1,10 @@
+---
+layout: default
+title: TypeTag
+parent: Tags
+nav_order: 13
+---
+
 TypeTag
 ===
 

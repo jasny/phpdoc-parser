@@ -1,3 +1,10 @@
+---
+layout: default
+title: ArrayTag
+parent: Tags
+nav_order: 2
+---
+
 ArrayTag
 ===
 

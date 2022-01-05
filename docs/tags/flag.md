@@ -1,3 +1,10 @@
+---
+layout: default
+title: FlagTag
+parent: Tags
+nav_order: 6
+---
+
 FlagTag
 ===
 

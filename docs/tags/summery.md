@@ -1,3 +1,10 @@
+---
+layout: default
+title: Summery
+parent: Tags
+nav_order: 1
+---
+
 Summery
 ===
 

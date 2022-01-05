@@ -1,3 +1,10 @@
+---
+layout: default
+title: NumberTag
+parent: Tags
+nav_order: 11
+---
+
 NumberTag
 ===
 

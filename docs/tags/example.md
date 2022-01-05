@@ -1,3 +1,10 @@
+---
+layout: default
+title: ExampleTag
+parent: Tags
+nav_order: 5
+---
+
 ExampleTag
 ===
 

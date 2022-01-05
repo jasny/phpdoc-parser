@@ -1,3 +1,10 @@
+---
+layout: default
+title: CustomTag
+parent: Tags
+nav_order: 3
+---
+
 CustomTag
 ===
 

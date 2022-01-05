@@ -1,3 +1,10 @@
+---
+layout: default
+title: MultiTag
+parent: Tags
+nav_order: 10
+---
+
 MultiTag
 ===
 

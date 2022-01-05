@@ -1,3 +1,10 @@
+---
+layout: default
+title: WordTag
+parent: Tags
+nav_order: 35
+---
+
 WordTag
 ===
 

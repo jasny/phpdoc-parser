@@ -1,3 +1,10 @@
+---
+layout: default
+title: MapTag
+parent: Tags
+nav_order: 7
+---
+
 MapTag
 ===
 
