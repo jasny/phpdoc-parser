@@ -178,7 +178,7 @@ After that create the parser from the tags as `$parser = new PhpdocParser($tags)
 
 The resolver function should accept a class name and return an expanded name.
 
-### Example with phpDocumentor/TypeResolver
+### Example
 
 This example uses [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver).
 
