@@ -62,7 +62,7 @@ $customTags = [
 $tags = PhpDocumentor::tags()->with($customTags);
 
 $parser = new PHPDocParser($tags);
-$annotations = $parser->parse($doc);
+$meta = $parser->parse($doc);
 ```
 
 The result will be the following:
@@ -124,7 +124,7 @@ So if you only need to parse those tags, you can simply do:
 
 $tags = PhpDocumentor::tags();
 $parser = new PhpdocParser($tags);
-$annotations = $parser->parse($doc);
+$meta = $parser->parse($doc);
 ```
 
 Tags classes
@@ -160,10 +160,10 @@ function getNotations(string $doc, array $tags = []) {
 }
 ```
 
-FQSEN Convertor
+FQSEN Resolver
 ---
 
-FQSEN stands for `Fully Qualified Structural Element Name`. FQSEN convertor is used to expand class name, function name to fully unique name (so with full namespace). For example, `Foo` can be converted to `Zoo\\Foo\\Bar`.
+FQSEN stands for `Fully Qualified Structural Element Name`. FQSEN convertor is used to expand class name or function name to fully unique name (so with full namespace). For example, `Foo` can be converted to `Zoo\\Foo\\Bar`.
 
 Such convertors are used in this lib. Some tags, that deal with variable types, or classes names, support adding them as a constructor parameter.
 
@@ -171,7 +171,29 @@ For example, `TypeTag`, that can be used for parsing `@return` tag, has the foll
 
 Convertor can be provided in one of two ways:
 
-* `$tags = PhpDocumentor::tags($fqsenConvertor)` - for all the tags, predefined in `PhpDocumentor::tags()`
-* `$tags = $tags->add(new TypeTag('footag', $fqsenConvertor))` - for all the tags, that are explicitly added to predefined, it should be passed as a constructor parameter (if it is supported by constructor).
+* `$tags = PhpDocumentor::tags($fn)` - for all the tags, predefined in `PhpDocumentor::tags()`
+* `$tags = $tags->add(new TypeTag('footag', $fn))` - for all the tags, that are explicitly added to predefined, it should be passed as a constructor parameter (if it is supported by constructor).
 
-Convertor should be a callable, that accepts a class name, and returns expanded name.
+After that create the parser from the tags as `$parser = new PhpdocParser($tags)`.
+
+The resolver function should accept a class name and return an expanded name.
+
+### Example with phpDocumentor/TypeResolver
+
+This example uses [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver).
+
+```php
+$reflection = new ReflectionClass('\My\Example\Classy');
+
+$contextFactory = new \phpDocumentor\Reflection\Types\ContextFactory();
+$context = $contextFactory->createFromReflector();
+
+$resolver = new \phpDocumentor\Reflection\FqsenResolver();
+$fn = fn(string $class): string => $resolver->resolve($class, $context);
+
+$tags = PhpDocumentor::tags($fn);
+$parser = new PhpdocParser($tags);
+
+$doc = $reflection->getDocComment();
+$meta = $parser->parse($doc);
+```
