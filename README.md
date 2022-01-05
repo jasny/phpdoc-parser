@@ -1,11 +1,11 @@
 Jasny PHPDoc parser
 ===
 
-[![Build Status](https://travis-ci.org/jasny/annotations.svg?branch=master)](https://travis-ci.org/jasny/annotations)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jasny/annotations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jasny/annotations/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/jasny/annotations/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jasny/annotations/?branch=master)
-[![Packagist Stable Version](https://img.shields.io/packagist/v/jasny/annotations.svg)](https://packagist.org/packages/jasny/annotations)
-[![Packagist License](https://img.shields.io/packagist/l/jasny/annotations.svg)](https://packagist.org/packages/jasny/annotations)
+[![Build status](https://github.com/jasny/phpdoc-parser/actions/workflows/php.yml/badge.svg)](https://github.com/jasny/phpdoc-parser/actions/workflows/php.yml)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jasny/phpdoc-parser/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jasny/phpdoc-parser/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/jasny/phpdoc-parser/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jasny/phpdoc-parser/?branch=master)
+[![Packagist Stable Version](https://img.shields.io/packagist/v/jasny/phpdoc-parser.svg)](https://packagist.org/packages/jasny/phpdoc-parser)
+[![Packagist License](https://img.shields.io/packagist/l/jasny/phpdoc-parser.svg)](https://packagist.org/packages/jasny/phpdoc-parser)
 
 Configurable DocBlock parser from PHP.
 
