@@ -11,9 +11,6 @@ Jasny PHPDoc parser
 
 Configurable DocBlock parser from PHP.
 
-Annotations aren't implemented in PHP itself which is why this component offers a way to use the PHP doc-blocks as a
-place for the well known tag syntax using the `@` char.
-
 The PHPDoc parser allows you to configure tags including the method how to parse and extract information. This
 is inline with phpDocumentor style annotations and differs from for instance Doctrine type annotations.
 
@@ -52,9 +49,9 @@ function foo($first, int $second)
 Parse annotations
 
 ```php
-use Jasny\PHPDocParser\PHPDocParser;
-use Jasny\PHPDocParser\Set\PhpDocumentor;
-use Jasny\PHPDocParser\Tag\FlagTag;
+use Jasny\PhpdocParser\PhpdocParser;
+use Jasny\PhpdocParser\Set\PhpDocumentor;
+use Jasny\PhpdocParser\Tag\FlagTag;
 
 $doc = (new ReflectionFunction('foo'))->getDocComment();
 
@@ -63,7 +60,7 @@ $customTags = [
 ];
 $tags = PhpDocumentor::tags()->with($customTags);
 
-$parser = new PHPDocParser($tags);
+$parser = new PhpdocParser($tags);
 $meta = $parser->parse($doc);
 ```
 
@@ -152,6 +149,9 @@ Here's a list of available tags classes, that should cover most of the use cases
 The following function is used in tags documentation, for short reference to parsing:
 
 ```php
+use Jasny\PhpdocParser\PhpdocParser;
+use Jasny\PhpdocParser\Set\PhpDocumentor;
+
 function getNotations(string $doc, array $tags = []) {
     $tags = PhpDocumentor::tags()->add($tags);
 
@@ -185,12 +185,17 @@ The resolver function should accept a class name and return an expanded name.
 This example uses [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver).
 
 ```php
+use Jasny\PhpdocParser\PhpdocParser;
+use Jasny\PhpdocParser\Set\PhpDocumentor;
+use phpDocumentor\Reflection\Types\ContextFactory;
+use phpDocumentor\Reflection\FqsenResolver;
+
 $reflection = new ReflectionClass('\My\Example\Classy');
 
-$contextFactory = new \phpDocumentor\Reflection\Types\ContextFactory();
+$contextFactory = new ContextFactory();
 $context = $contextFactory->createFromReflector($reflection);
 
-$resolver = new \phpDocumentor\Reflection\FqsenResolver();
+$resolver = new FqsenResolver();
 $fn = fn(string $class): string => $resolver->resolve($class, $context);
 
 $tags = PhpDocumentor::tags($fn);
