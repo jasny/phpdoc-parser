@@ -40,7 +40,7 @@ class MethodTag extends AbstractTag
      */
     public function process(array $notations, string $value): array
     {
-        $regexp = '/^(?:(?<return_type>\S+)\s+)?(?<name>\w+)\((?<params>[^\)]+)?\)(?:\s+(?<description>.*))?/';
+        $regexp = '/^(?:(?<static>static)\s+)?(?:(?<return_type>\S+)\s+)?(?<name>\w+)\((?<params>[^\)]+)?\)(?:\s+(?<description>.*))?/';
 
         if (!preg_match($regexp, $value, $method)) {
             throw new PhpdocException("Failed to parse '@{$this->name} $value': invalid syntax");
@@ -50,8 +50,14 @@ class MethodTag extends AbstractTag
             $method['return_type'] = call_user_func($this->fqsenConvertor, $method['return_type']);
         }
 
+        if (isset($method['static']) && $method['static'] !== '') {
+            $method['static'] = true;        
+        } else {
+            unset($method['static']);
+        }
+        
         $method['params'] = isset($method['params']) ? $this->processParams($value, $method['params']) : [];
-        $method = array_only($method, ['return_type', 'name', 'params', 'description']);
+        $method = array_only($method, ['static', 'return_type', 'name', 'params', 'description']);
 
         $notations[$this->name] = $method;
 

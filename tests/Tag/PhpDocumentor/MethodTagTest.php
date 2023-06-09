@@ -89,6 +89,19 @@ class MethodTagTest extends TestCase
                     ]
                 ]
             ],
+            [
+                'static string someMethod()',
+                null,
+                [
+                    'some' => 'value',
+                    'foo' => [
+                        'static' => true,
+                        'return_type' => 'string',
+                        'name' => 'someMethod',
+                        'params' => []
+                    ]
+                ]
+            ],
         ];
     }
 
