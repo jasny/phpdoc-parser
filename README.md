@@ -91,7 +91,7 @@ The result will be the following:
 Tags
 ---
 
-The following tags are already included in `PhpDocumentor::tags()`:
+The following tags are included in `PhpDocumentor::tags()`:
 
 * `@api`
 * `@author`
@@ -116,9 +116,12 @@ The following tags are already included in `PhpDocumentor::tags()`:
 * `@used-by`
 * `@var`
 
-So if you only need to parse those tags, you can simply do:
+If you only need to parse those tags, you can simply do:
 
 ```php
+use Jasny\PhpdocParser\PhpdocParser;
+use Jasny\PhpdocParser\Set\PhpDocumentor;
+
 //$doc = ...; Get doc-comment string from reflection
 
 $tags = PhpDocumentor::tags();
@@ -129,38 +132,22 @@ $meta = $parser->parse($doc);
 Tags classes
 ---
 
-Here's a list of available tags classes, that should cover most of the use cases:
+Here's a list of available tags classes:
 
-* [Summery](https://www.jasny.net/phpdoc-parser/tags/summery.md)
-* [ArrayTag](https://www.jasny.net/phpdoc-parser/tags/array.md)
-* [CustomTag](https://www.jasny.net/phpdoc-parser/tags/custom.md)
-* [DescriptionTag](https://www.jasny.net/phpdoc-parser/tags/description.md)
-* [ExampleTag](https://www.jasny.net/phpdoc-parser/tags/example.md)
-* [FlagTag](https://www.jasny.net/phpdoc-parser/tags/flag.md)
-* [MapTag](https://www.jasny.net/phpdoc-parser/tags/map.md)
-* [MethodTag](https://www.jasny.net/phpdoc-parser/tags/method.md)
-* [ModifyTag](https://www.jasny.net/phpdoc-parser/tags/modify.md)
-* [MultiTag](https://www.jasny.net/phpdoc-parser/tags/multi.md)
-* [NumberTag](https://www.jasny.net/phpdoc-parser/tags/number.md)
-* [RegExpTag](https://www.jasny.net/phpdoc-parser/tags/regexp.md)
-* [VarTag](https://www.jasny.net/phpdoc-parser/tags/var.md)
-* [WordTag](https://www.jasny.net/phpdoc-parser/tags/word.md)
-
-The following function is used in tags documentation, for short reference to parsing:
-
-```php
-use Jasny\PhpdocParser\PhpdocParser;
-use Jasny\PhpdocParser\Set\PhpDocumentor;
-
-function getNotations(string $doc, array $tags = []) {
-    $tags = PhpDocumentor::tags()->add($tags);
-
-    $parser = new PhpdocParser($tags);
-    $notations = $parser->parse($doc);
-
-    return $notations;
-}
-```
+* [Summery](https://www.jasny.net/phpdoc-parser/tags/summery)
+* [ArrayTag](https://www.jasny.net/phpdoc-parser/tags/array)
+* [CustomTag](https://www.jasny.net/phpdoc-parser/tags/custom)
+* [DescriptionTag](https://www.jasny.net/phpdoc-parser/tags/description)
+* [ExampleTag](https://www.jasny.net/phpdoc-parser/tags/example)
+* [FlagTag](https://www.jasny.net/phpdoc-parser/tags/flag)
+* [MapTag](https://www.jasny.net/phpdoc-parser/tags/map)
+* [MethodTag](https://www.jasny.net/phpdoc-parser/tags/method)
+* [ModifyTag](https://www.jasny.net/phpdoc-parser/tags/modify)
+* [MultiTag](https://www.jasny.net/phpdoc-parser/tags/multi)
+* [NumberTag](https://www.jasny.net/phpdoc-parser/tags/number)
+* [RegExpTag](https://www.jasny.net/phpdoc-parser/tags/regexp)
+* [VarTag](https://www.jasny.net/phpdoc-parser/tags/var)
+* [WordTag](https://www.jasny.net/phpdoc-parser/tags/word)
 
 FQSEN Resolver
 ---
