@@ -9,11 +9,8 @@ permalink: /
 Configurable DocBlock parser from PHP
 {: .fs-6 .fw-300 }
 
-Annotations aren't implemented in PHP itself which is why this component offers a way to use the PHP doc-blocks as a
-place for the well known tag syntax using the `@` char.
-
 The PHPDoc parser allows you to configure tags including the method how to parse and extract information. This
-is inline with phpDocumentor style annotations and differs from for instance Doctrine type annotations.
+is inline with phpDocumentor style annotations.
 
 Installation
 ---
